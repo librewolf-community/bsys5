@@ -43,6 +43,7 @@ run-docker-image-debian11 :
 	mkdir work
 	(cd work && tar xf ../$(tarball))
 	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-debian11 sh -c "cd /work/librewolf-$(version) && ./mach build && ./mach package"
+	cp -v work/librewolf-96.0.3/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.debian11-x86_64.tar.bz2 
 
 
 
@@ -58,7 +59,8 @@ run-docker-image-fedora35 :
 	sudo rm -rf work
 	mkdir work
 	(cd work && tar xf ../$(tarball))
-	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-fedora35 sh -c "cd /work/librewolf-$(version) && MOZBUILD_STATE_PATH=$$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser && . /root/.cargo/env && cargo install cbindgen && ./mach build && ./mach package"
+	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-fedora35 sh -c "cd /work/librewolf-$(version) && ./mach build && ./mach package"
+	cp -v work/librewolf-96.0.3/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.fedora35-x86_64.tar.bz2 
 
 
 
