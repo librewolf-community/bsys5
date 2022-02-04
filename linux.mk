@@ -2,7 +2,7 @@
 # $(distro_image)
 # $(use_docker)
 
-.PHONY : docker build ci
+.PHONY : docker build
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -13,7 +13,7 @@ use_docker=true
 outfile=librewolf-$(version)-$(release).en-US.$(distro)-x86_64.tar.bz2
 
 docker :
-	docker build --build-arg "distro=$(distro_image)" -t librewolf/bsys5-image-$(distro) - < linux.Dockerfile
+	docker build --build-arg "distro=$(distro_image)" --build-arg "version=$(version)" --build-arg "source_release=$(source_release)" -t librewolf/bsys5-image-$(distro) - < linux.Dockerfile
 
 build : work
 	if [ $(use_docker) = true ]; then \
