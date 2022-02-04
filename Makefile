@@ -1,4 +1,4 @@
-.PHONY : help all clean veryclean fetch prune docker build debian11 fedora35 ci-debian ci-fedora35
+.PHONY : help all clean veryclean fetch prune docker push build debian11 fedora35 ci-debian ci-fedora35
 
 
 version:=$(shell cat version)
@@ -8,7 +8,8 @@ source_release:=$(shell cat source_release)
 tarball=librewolf-$(version)-$(source_release).source.tar.gz
 
 help :
-	@echo "Use: make [help] [all] [docker] [build] [clean] [veryclean] [fetch] [prune]"
+	@echo "Use: make [help] [all] [docker] [push] [build] [clean]"
+	#echo "          [veryclean] [fetch] [prune]"
 	@echo ""
 	@echo "OS targets:" 
 	@echo "  [debian11]  - build for debian11"
@@ -35,15 +36,17 @@ fetch : $(tarball)
 $(tarball) :
 	wget -O $(tarball) "https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/$(tarball)?job=Build"
 
-docker : make-docker-image-debian11 make-docker-image-fedora35 
+docker : docker-debian11 docker-fedora35 
 build : debian11 fedora35
+push :
+	docker push librewolf/bsys5-image-debian11 librewolf/bsys5-image-fedora35
 
 work : $(tarball)
 	mkdir work
 	(cd work && tar xf ../$(tarball))
 
 ## debian11
-make-docker-image-debian11 :
+docker-debian11 :
 	docker build --build-arg "distro=debian:bullseye" -t librewolf/bsys5-image-debian11 - < Dockerfile
 debian11 : work
 	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-debian11 sh -c "(cd work/librewolf-$(version) && ./mach build && ./mach package)"
@@ -59,7 +62,7 @@ ci-debian11 : work
 
 
 ## fedora35
-make-docker-image-fedora35 :
+docker-fedora35 :
 	docker build --build-arg "distro=fedora:35" -t librewolf/bsys5-image-fedora35 - < Dockerfile
 fedora35 : work
 	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-fedora35 sh -c "cd /work/librewolf-$(version) && ./mach build && ./mach package"
