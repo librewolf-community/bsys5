@@ -13,7 +13,7 @@ use_docker=true
 outfile=librewolf-$(version)-$(release).en-US.$(distro)-x86_64.tar.bz2
 
 docker :
-	docker build --build-arg "distro=$(distro_image)" -t librewolf/bsys5-image-$(distro) - < Dockerfile
+	docker build --build-arg "distro=$(distro_image)" -t librewolf/bsys5-image-$(distro) - < linux.Dockerfile
 
 build : work
 	if [ $(use_docker) = true ]; then \
