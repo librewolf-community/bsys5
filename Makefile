@@ -92,7 +92,7 @@ ci-ubuntu20 : work
 
 ## ubuntu21
 docker-ubuntu21 :
-	${MAKE} -f linux.mk distro=ubuntu21 "distro_image=ubuntu:20.04" docker
+	${MAKE} -f linux.mk distro=ubuntu21 "distro_image=ubuntu:21.10" docker
 ubuntu21 : work
 	${MAKE} -f linux.mk distro=ubuntu21 build
 ci-ubuntu21 : work
