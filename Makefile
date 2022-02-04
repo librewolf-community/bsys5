@@ -1,4 +1,4 @@
-.PHONY : help all clean veryclean fetch prune docker push build docker-debian11 debian11 ci-debian11 docker-mint20 mint20 ci-mint20 docker-ubuntu20 ubuntu20 ci-ubuntu20 docker-ubuntu21 ubuntu21 ci-ubuntu21 docker-fedora34 fedora34 ci-fedora34 docker-fedora35 fedora35 ci-fedora35
+.PHONY : help all clean veryclean fetch prune docker push build docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -25,14 +25,6 @@ help :
 	@echo "  [ubuntu21]"
 	@echo "  [fedora34]"
 	@echo "  [fedora35]"
-	@echo ""
-	@echo "CI targets:"
-	@echo "  [ci-debian11]"
-	@echo "  [ci-mint20]"
-	@echo "  [ci-ubuntu20]"
-	@echo "  [ci-ubuntu21]"
-	@echo "  [ci-fedora34]"
-	@echo "  [ci-fedora35]"
 	@echo ""
 
 
@@ -71,32 +63,24 @@ docker-debian11 :
 	${MAKE} -f linux.mk distro=debian11 "distro_image=debian:bullseye" docker
 debian11 : work
 	${MAKE} -f linux.mk distro=debian11 build
-ci-debian11 : work
-	${MAKE} -f linux.mk distro=debian11 ci
 
 ## mint20
 docker-mint20 :
 	${MAKE} -f linux.mk distro=mint20 "distro_image=linuxmintd/mint20.2-amd64" docker
 mint20 : work
 	${MAKE} -f linux.mk distro=mint20 build
-ci-mint20 : work
-	${MAKE} -f linux.mk distro=mint20 ci
 
 ## ubuntu20
 docker-ubuntu20 :
 	${MAKE} -f linux.mk distro=ubuntu20 "distro_image=ubuntu:20.04" docker
 ubuntu20 : work
 	${MAKE} -f linux.mk distro=ubuntu20 build
-ci-ubuntu20 : work
-	${MAKE} -f linux.mk distro=ubuntu20 ci
 
 ## ubuntu21
 docker-ubuntu21 :
 	${MAKE} -f linux.mk distro=ubuntu21 "distro_image=ubuntu:21.10" docker
 ubuntu21 : work
 	${MAKE} -f linux.mk distro=ubuntu21 build
-ci-ubuntu21 : work
-	${MAKE} -f linux.mk distro=ubuntu21 ci
 
 
 
@@ -105,15 +89,11 @@ docker-fedora34 :
 	${MAKE} -f linux.mk distro=fedora34 "distro_image=fedora:34" docker
 fedora34 : work
 	${MAKE} -f linux.mk distro=fedora34 build
-ci-fedora34 : work
-	${MAKE} -f linux.mk distro=fedora34 ci
 
 ## fedora35
 docker-fedora35 :
 	${MAKE} -f linux.mk distro=fedora35 "distro_image=fedora:35" docker
 fedora35 : work
 	${MAKE} -f linux.mk distro=fedora35 build
-ci-fedora35 : work
-	${MAKE} -f linux.mk distro=fedora35 ci
 
 
