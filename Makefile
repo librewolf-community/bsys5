@@ -1,4 +1,4 @@
-.PHONY : help all clean veryclean fetch prune docker build debian11 fedora35
+.PHONY : help all clean veryclean fetch prune docker build debian11 fedora35 ci-debian ci-fedora35
 
 
 version:=$(shell cat version)
@@ -44,18 +44,16 @@ debian11 : run-docker-image-debian11
 make-docker-image-debian11 :
 	docker build --build-arg "distro=debian:bullseye" -t librewolf/bsys5-image-debian11 - < Dockerfile
 run-docker-image-debian11 :
-	sudo rm -rf work
 	mkdir work
 	(cd work && tar xf ../$(tarball))
 	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-debian11 sh -c "(cd work/librewolf-$(version) && ./mach build && ./mach package)"
-	cp -v work/librewolf-96.0.3/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.debian11-x86_64.tar.bz2 
+	cp -v work/librewolf-$(version)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.debian11-x86_64.tar.bz2 
 
 ci-debian11 :
-	sudo rm -rf work
 	mkdir work
 	(cd work && tar xf ../$(tarball))
 	(cd work/librewolf-$(version) && ./mach build && ./mach package)
-	cp -v work/librewolf-96.0.3/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.debian11-x86_64.tar.bz2 
+	cp -v work/librewolf-$(version)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.debian11-x86_64.tar.bz2 
 
 
 
@@ -68,18 +66,16 @@ fedora35 : run-docker-image-fedora35
 make-docker-image-fedora35 :
 	docker build --build-arg "distro=fedora:35" -t librewolf/bsys5-image-fedora35 - < Dockerfile
 run-docker-image-fedora35 :
-	sudo rm -rf work
 	mkdir work
 	(cd work && tar xf ../$(tarball))
 	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-fedora35 sh -c "cd /work/librewolf-$(version) && ./mach build && ./mach package"
-	cp -v work/librewolf-96.0.3/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.fedora35-x86_64.tar.bz2 
+	cp -v work/librewolf-$(version)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.fedora35-x86_64.tar.bz2 
 
 ci-fedora35 :
-	sudo rm -rf work
 	mkdir work
 	(cd work && tar xf ../$(tarball))
 	(cd /work/librewolf-$(version) && ./mach build && ./mach package)
-	cp -v work/librewolf-96.0.3/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.fedora35-x86_64.tar.bz2 
+	cp -v work/librewolf-$(version)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.fedora35-x86_64.tar.bz2 
 
 
 
