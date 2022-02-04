@@ -8,6 +8,8 @@ version:=$(shell cat version)
 release:=$(shell cat release)
 source_release:=$(shell cat source_release)
 
+use_docker=false
+
 outfile=librewolf-$(version)-$(release).en-US.$(distro)-x86_64.tar.bz2
 
 docker :
