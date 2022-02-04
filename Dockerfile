@@ -9,7 +9,7 @@ RUN ( dnf -y upgrade && dnf -y install mercurial python3 python3-devel wget ; tr
 RUN mkdir /bootstrap
 WORKDIR /bootstrap
 # setup wasi
-RUN ( export target_wasi_location=$HOME/.mozbuild/wrlb/ && wget https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-14/wasi-sdk-14.0-linux.tar.gz && tar xvf wasi-sdk-14.0-linux.tar.gz && mkdir -p $target_wasi_location && rm -rf $target_wasi_location/wasi-sysroot && cp -vr wasi-sdk-14.0/share/wasi-sysroot $target_wasi_location && rm -f wasi-sdk-*.tar.gz* && rm -rf wasi-sdk-* )
+RUN ( export target_wasi_location=$HOME/.mozbuild/wrlb/ && wget -q https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-14/wasi-sdk-14.0-linux.tar.gz && tar xf wasi-sdk-14.0-linux.tar.gz && mkdir -p $target_wasi_location && rm -rf $target_wasi_location/wasi-sysroot && cp -vr wasi-sdk-14.0/share/wasi-sysroot $target_wasi_location && rm -f wasi-sdk-*.tar.gz* && rm -rf wasi-sdk-* )
 # run the bootstrap
 RUN wget -q -O librewolf-96.0.3-3.source.tar.gz "https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/librewolf-96.0.3-3.source.tar.gz?job=Build"
 RUN tar xf librewolf-96.0.3-3.source.tar.gz
