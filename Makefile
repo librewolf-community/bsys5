@@ -38,20 +38,18 @@ $(tarball) :
 docker : make-docker-image-debian11 make-docker-image-fedora35 
 build : run-docker-image-debian11 run-docker-image-fedora35
 
-## debian11
-debian11 : run-docker-image-debian11
-
-make-docker-image-debian11 :
-	docker build --build-arg "distro=debian:bullseye" -t librewolf/bsys5-image-debian11 - < Dockerfile
-run-docker-image-debian11 :
+work : $(tarball)
 	mkdir work
 	(cd work && tar xf ../$(tarball))
+
+## debian11
+make-docker-image-debian11 :
+	docker build --build-arg "distro=debian:bullseye" -t librewolf/bsys5-image-debian11 - < Dockerfile
+debian11 : work
 	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-debian11 sh -c "(cd work/librewolf-$(version) && ./mach build && ./mach package)"
 	cp -v work/librewolf-$(version)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.debian11-x86_64.tar.bz2 
 
-ci-debian11 :
-	mkdir work
-	(cd work && tar xf ../$(tarball))
+ci-debian11 : work
 	(cd work/librewolf-$(version) && ./mach build && ./mach package)
 	cp -v work/librewolf-$(version)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.debian11-x86_64.tar.bz2 
 
@@ -61,19 +59,13 @@ ci-debian11 :
 
 
 ## fedora35
-fedora35 : run-docker-image-fedora35
-
 make-docker-image-fedora35 :
 	docker build --build-arg "distro=fedora:35" -t librewolf/bsys5-image-fedora35 - < Dockerfile
-run-docker-image-fedora35 :
-	mkdir work
-	(cd work && tar xf ../$(tarball))
+fedora35 : work
 	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-fedora35 sh -c "cd /work/librewolf-$(version) && ./mach build && ./mach package"
 	cp -v work/librewolf-$(version)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.fedora35-x86_64.tar.bz2 
 
-ci-fedora35 :
-	mkdir work
-	(cd work && tar xf ../$(tarball))
+ci-fedora35 : work
 	(cd /work/librewolf-$(version) && ./mach build && ./mach package)
 	cp -v work/librewolf-$(version)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.fedora35-x86_64.tar.bz2 
 
