@@ -36,7 +36,7 @@ $(tarball) :
 	wget -O $(tarball) "https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/$(tarball)?job=Build"
 
 docker : make-docker-image-debian11 make-docker-image-fedora35 
-build : run-docker-image-debian11 run-docker-image-fedora35
+build : debian11 fedora35
 
 work : $(tarball)
 	mkdir work
