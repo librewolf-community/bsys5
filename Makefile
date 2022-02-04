@@ -4,8 +4,6 @@ version:=$(shell cat version)
 release:=$(shell cat release)
 source_release:=$(shell cat source_release)
 
-use_docker=true
-
 tarball=librewolf-$(version)-$(source_release).source.tar.gz
 
 help :
@@ -62,40 +60,40 @@ work : $(tarball)
 
 ## debian11
 docker-debian11 :
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=debian11 "distro_image=debian:bullseye" docker
+	${MAKE} -f linux.mk distro=debian11 "distro_image=debian:bullseye" docker
 debian11 : work
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=debian11 build
+	${MAKE} -f linux.mk distro=debian11 build
 
 ## mint20
 docker-mint20 :
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=mint20 "distro_image=linuxmintd/mint20.2-amd64" docker
+	${MAKE} -f linux.mk distro=mint20 "distro_image=linuxmintd/mint20.2-amd64" docker
 mint20 : work
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=mint20 build
+	${MAKE} -f linux.mk distro=mint20 build
 
 ## ubuntu20
 docker-ubuntu20 :
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=ubuntu20 "distro_image=ubuntu:20.04" docker
+	${MAKE} -f linux.mk distro=ubuntu20 "distro_image=ubuntu:20.04" docker
 ubuntu20 : work
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=ubuntu20 build
+	${MAKE} -f linux.mk distro=ubuntu20 build
 
 ## ubuntu21
 docker-ubuntu21 :
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=ubuntu21 "distro_image=ubuntu:21.10" docker
+	${MAKE} -f linux.mk distro=ubuntu21 "distro_image=ubuntu:21.10" docker
 ubuntu21 : work
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=ubuntu21 build
+	${MAKE} -f linux.mk distro=ubuntu21 build
 
 
 
 ## fedora34
 docker-fedora34 :
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=fedora34 "distro_image=fedora:34" docker
+	${MAKE} -f linux.mk distro=fedora34 "distro_image=fedora:34" docker
 fedora34 : work
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=fedora34 build
+	${MAKE} -f linux.mk distro=fedora34 build
 
 ## fedora35
 docker-fedora35 :
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=fedora35 "distro_image=fedora:35" docker
+	${MAKE} -f linux.mk distro=fedora35 "distro_image=fedora:35" docker
 fedora35 : work
-	${MAKE} -f linux.mk use_docker=$(use_docker) distro=fedora35 build
+	${MAKE} -f linux.mk distro=fedora35 build
 
 
