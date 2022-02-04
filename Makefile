@@ -64,6 +64,8 @@ ci-debian11 : work
 ## fedora35
 docker-fedora35 :
 	docker build --build-arg "distro=fedora:35" -t librewolf/bsys5-image-fedora35 - < Dockerfile
+
+
 fedora35 : work
 	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-fedora35 sh -c "cd /work/librewolf-$(version) && ./mach build && ./mach package"
 	cp -v work/librewolf-$(version)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.fedora35-x86_64.tar.bz2 
