@@ -1,4 +1,4 @@
-.PHONY : help all clean veryclean fetch prune
+.PHONY : help all clean veryclean fetch prune docker build debian11 fedora35
 
 
 version:=$(shell cat version)
@@ -8,11 +8,14 @@ source_release:=$(shell cat source_release)
 tarball=librewolf-$(version)-$(source_release).source.tar.gz
 
 help :
-	@echo "Use: make [help] [all] [clean] [veryclean] [fetch] [prune]"
+	@echo "Use: make [help] [all] [docker] [build] [clean] [veryclean] [fetch] [prune]"
+	@echo ""
+	@echo "Os targets:" 
+	@echo "  [debian11]  - docker+build for debian11"
+	@echo "  [fedora35]  - docker+build for fedora35"
 
 all :
-	${MAKE} make-docker-image-debian11
-	${MAKE} run-docker-image-debian11
+	@echo "Nothing happens."
 clean :
 	sudo rm -rf work
 
@@ -27,17 +30,35 @@ $(tarball) :
 	wget -O $(tarball) "https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/$(tarball)?job=Build"
 
 
+docker : make-docker-image-debian11 make-docker-image-fedora35 
+build : run-docker-image-debian11 run-docker-image-fedora35
 
-# debian11
-tag=debian11
-tag_distro=debian:bullseye
+## debian11
+debian11 : make-docker-image-debian11 run-docker-image-debian11
+
 make-docker-image-debian11 :
-	docker build --no-cache --build-arg distro=$(tag_distro) -t librewolf/bsys5-image-$(tag) - < Dockerfile
+	docker build --build-arg "distro=debian:bullseye" -t librewolf/bsys5-image-debian11 - < Dockerfile
 run-docker-image-debian11 :
 	sudo rm -rf work
 	mkdir work
 	(cd work && tar xf ../$(tarball))
-	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(tag) sh -c "cd /work/librewolf-$(version) && MOZBUILD_STATE_PATH=$$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser && . /root/.cargo/env && cargo install cbindgen && ./mach build && ./mach package"
+	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-debian11 sh -c "cd /work/librewolf-$(version) && MOZBUILD_STATE_PATH=$$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser && . /root/.cargo/env && cargo install cbindgen && ./mach build && ./mach package"
+
+
+
+
+
+
+## fedora35
+fedora35 : make-docker-image-fedora35 run-docker-image-fedora35
+
+make-docker-image-fedora35 :
+	docker build --build-arg "distro=fedora:35" -t librewolf/bsys5-image-fedora35 - < Dockerfile
+run-docker-image-fedora35 :
+	sudo rm -rf work
+	mkdir work
+	(cd work && tar xf ../$(tarball))
+	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-fedora35 sh -c "cd /work/librewolf-$(version) && MOZBUILD_STATE_PATH=$$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser && . /root/.cargo/env && cargo install cbindgen && ./mach build && ./mach package"
 
 
 
