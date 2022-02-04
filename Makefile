@@ -42,7 +42,7 @@ run-docker-image-debian11 :
 	sudo rm -rf work
 	mkdir work
 	(cd work && tar xf ../$(tarball))
-	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-debian11 sh -c "cd /work/librewolf-$(version) && MOZBUILD_STATE_PATH=$$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser && . /root/.cargo/env && cargo install cbindgen && ./mach build && ./mach package"
+	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-debian11 sh -c "cd /work/librewolf-$(version) && ./mach build && ./mach package"
 
 
 
