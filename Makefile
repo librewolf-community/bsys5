@@ -1,4 +1,4 @@
-.PHONY : help all clean veryclean fetch prune docker push build docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35
+.PHONY : help all clean veryclean fetch prune docker push build update docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -74,34 +74,39 @@ work : $(tarball)
 	mkdir work
 	(cd work && tar xf ../$(tarball))
 
+update :
+	@wget -q -O version "https://gitlab.com/librewolf-community/browser/source/-/raw/main/version"
+	@wget -q -O source_release "https://gitlab.com/librewolf-community/browser/source/-/raw/main/release"
+	@echo Source version: $(shell cat version)-$(shell cat source_release)
+	@echo Bsys5 release: $(shell cat release)
 
 ## debian11
 docker-debian11 :
-	${MAKE} -f linux.mk distro=debian11 "distro_image=debian:bullseye" docker
+	${MAKE} -f assets/linux.mk distro=debian11 "distro_image=debian:bullseye" docker
 debian11 : work
-	${MAKE} -f linux.mk distro=debian11 build
+	${MAKE} -f assets/linux.mk distro=debian11 build
 ## mint20
 docker-mint20 :
-	${MAKE} -f linux.mk distro=mint20 "distro_image=linuxmintd/mint20.2-amd64" docker
+	${MAKE} -f assets/linux.mk distro=mint20 "distro_image=linuxmintd/mint20.2-amd64" docker
 mint20 : work
-	${MAKE} -f linux.mk distro=mint20 build
+	${MAKE} -f assets/linux.mk distro=mint20 build
 ## ubuntu20
 docker-ubuntu20 :
-	${MAKE} -f linux.mk distro=ubuntu20 "distro_image=ubuntu:20.04" docker
+	${MAKE} -f assets/linux.mk distro=ubuntu20 "distro_image=ubuntu:20.04" docker
 ubuntu20 : work
-	${MAKE} -f linux.mk distro=ubuntu20 build
+	${MAKE} -f assets/linux.mk distro=ubuntu20 build
 ## ubuntu21
 docker-ubuntu21 :
-	${MAKE} -f linux.mk distro=ubuntu21 "distro_image=ubuntu:21.10" docker
+	${MAKE} -f assets/linux.mk distro=ubuntu21 "distro_image=ubuntu:21.10" docker
 ubuntu21 : work
-	${MAKE} -f linux.mk distro=ubuntu21 build
+	${MAKE} -f assets/linux.mk distro=ubuntu21 build
 ## fedora34
 docker-fedora34 :
-	${MAKE} -f linux.mk distro=fedora34 "distro_image=fedora:34" docker
+	${MAKE} -f assets/linux.mk distro=fedora34 "distro_image=fedora:34" docker
 fedora34 : work
-	${MAKE} -f linux.mk distro=fedora34 build
+	${MAKE} -f assets/linux.mk distro=fedora34 build
 ## fedora35
 docker-fedora35 :
-	${MAKE} -f linux.mk distro=fedora35 "distro_image=fedora:35" docker
+	${MAKE} -f assets/linux.mk distro=fedora35 "distro_image=fedora:35" docker
 fedora35 : work
-	${MAKE} -f linux.mk distro=fedora35 build
+	${MAKE} -f assets/linux.mk distro=fedora35 build
