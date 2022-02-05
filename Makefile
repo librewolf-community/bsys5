@@ -47,11 +47,15 @@ $(tarball) :
 
 docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-fedora34 docker-fedora35
 
-build : debian11 mint20 ubuntu20 ubuntu21 fedora34 fedora35
+build : clean debian11 clean mint20 clean ubuntu20 clean ubuntu21 clean fedora34 clean fedora35 clean
 
 push :
-	docker push librewolf/bsys5-image-debian11 librewolf/bsys5-image-mint20 librewolf/bsys5-image-ubuntu20 librewolf/bsys5-image-ubuntu21 librewolf/bsys5-image-fedora34 librewolf/bsys5-image-fedora35
-
+	docker push librewolf/bsys5-image-debian11
+	docker push librewolf/bsys5-image-mint20
+	docker push librewolf/bsys5-image-ubuntu20
+	docker push librewolf/bsys5-image-ubuntu21
+	docker push librewolf/bsys5-image-fedora34
+	docker push librewolf/bsys5-image-fedora35
 
 work : $(tarball)
 	mkdir work
