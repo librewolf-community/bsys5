@@ -47,7 +47,20 @@ $(tarball) :
 
 docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-fedora34 docker-fedora35
 
-build : clean debian11 clean mint20 clean ubuntu20 clean ubuntu21 clean fedora34 clean fedora35 clean
+build :
+	${MAKE} clean
+	${MAKE} debian11
+	${MAKE} clean
+	${MAKE} mint20
+	${MAKE} clean
+	${MAKE} ubuntu20
+	${MAKE} clean
+	${MAKE} ubuntu21
+	${MAKE} clean
+	${MAKE} fedora34
+	${MAKE} clean
+	${MAKE} fedora35
+	${MAKE} clean
 
 push :
 	docker push librewolf/bsys5-image-debian11
