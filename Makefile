@@ -1,4 +1,4 @@
-.PHONY : help all clean veryclean fetch prune docker push build update docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35
+.PHONY : help clean veryclean fetch prune docker push build update docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -7,8 +7,8 @@ source_release:=$(shell cat source_release)
 tarball=librewolf-$(version)-$(source_release).source.tar.gz
 
 help :
-	@echo "Use: make [help] [all] [docker] [push] [build] [clean]"
-	@echo "          [veryclean] [fetch] [prune]"
+	@echo "Use: make [help] [docker] [push] [build] [clean] [veryclean]"
+	@echo "          [fetch] [update] [prune]"
 	@echo ""
 	@echo "docker targets:" 
 	@echo "  [docker-debian11]"
@@ -17,6 +17,8 @@ help :
 	@echo "  [docker-ubuntu21]"
 	@echo "  [docker-fedora34]"
 	@echo "  [docker-fedora35]"
+	@echo "  [docker-macos-x86_64]"
+	@echo "  [docker-macos-aarch64]"
 	@echo ""
 	@echo "build targets:" 
 	@echo "  [debian11]"
@@ -25,11 +27,11 @@ help :
 	@echo "  [ubuntu21]"
 	@echo "  [fedora34]"
 	@echo "  [fedora35]"
+	@echo "  [macos-x64_64]"
+	@echo "  [macos-aarch64]"
 	@echo ""
 
 
-all :
-	@echo "Nothing happens."
 clean :
 	sudo rm -rf work
 
@@ -80,6 +82,11 @@ update :
 	@echo Source version: $(shell cat version)-$(shell cat source_release)
 	@echo Bsys5 release: $(shell cat release)
 
+
+#
+# Linux
+#
+
 ## debian11
 docker-debian11 :
 	${MAKE} -f assets/linux.mk distro=debian11 "distro_image=debian:bullseye" docker
@@ -110,3 +117,20 @@ docker-fedora35 :
 	${MAKE} -f assets/linux.mk distro=fedora35 "distro_image=fedora:35" docker
 fedora35 : work
 	${MAKE} -f assets/linux.mk distro=fedora35 build
+
+
+#
+# MacOS
+#
+
+## macos-x86_64
+docker-macos-x86_64 :
+	${MAKE} -f assets/macos.mk arch=x86_64 docker
+macos-x86_64 : work
+	${MAKE} -f assets/macos.mk arch=x86_64 build
+
+## macos-aarch64
+docker-macos-aarch64 :
+	${MAKE} -f assets/macos.mk arch=aarch64 docker
+macos-aarch64 : work
+	${MAKE} -f assets/macos.mk arch=aarch64 build
