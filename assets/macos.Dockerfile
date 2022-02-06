@@ -45,7 +45,7 @@ RUN ./mach artifact toolchain --from-build linux64-hfsplus
 RUN ./mach artifact toolchain --from-build linux64-binutils
 RUN ./mach artifact toolchain --from-build linux64-clang-macosx-cross
 RUN /root/.cargo/bin/cargo install cbindgen
-RUN /root/.cargo/bin/rustup target add $(arch)-apple-darwin 
+RUN /root/.cargo/bin/rustup target add $arch-apple-darwin 
 
 RUN cp -r binutils /root/.mozbuild
 RUN cp -r cctools /root/.mozbuild
