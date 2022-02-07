@@ -47,7 +47,7 @@ fetch : $(tarball)
 $(tarball) :
 	wget -q -O $(tarball) "https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/$(tarball)?job=Build"
 
-docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-fedora34 docker-fedora35
+docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-fedora34 docker-fedora35 docker-macos-x86_64 docker-macos-aarch64
 
 build :
 	${MAKE} clean
@@ -63,6 +63,10 @@ build :
 	${MAKE} clean
 	${MAKE} fedora35
 	${MAKE} clean
+	${MAKE} macos-x86_64
+	${MAKE} clean
+	${MAKE} fedora35
+	${MAKE} macos-aarch64
 
 push :
 	docker push librewolf/bsys5-image-debian11
@@ -71,6 +75,8 @@ push :
 	docker push librewolf/bsys5-image-ubuntu21
 	docker push librewolf/bsys5-image-fedora34
 	docker push librewolf/bsys5-image-fedora35
+	docker push librewolf/bsys5-image-macos-x86_64
+	docker push librewolf/bsys5-image-macos-aarch64
 
 work : $(tarball)
 	mkdir work
