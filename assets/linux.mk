@@ -18,6 +18,7 @@ docker :
 build : $(outfile) $(outfile).sha256sum
 
 $(outfile) $(outfile).sha256sum :
+	${MAKE} work
 	if [ $(use_docker) = true ]; then \
 		docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(distro) sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package" ; \
 	else \

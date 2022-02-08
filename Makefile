@@ -1,10 +1,8 @@
-.PHONY : help clean veryclean fetch prune docker push build update docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
+.PHONY : help clean veryclean fetch prune docker push build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
 
 version:=$(shell cat version)
 release:=$(shell cat release)
 source_release:=$(shell cat source_release)
-
-tarball=librewolf-$(version)-$(source_release).source.tar.gz
 
 help :
 	@echo "Use: make [help] [docker] [push] [build] [clean] [veryclean]"
@@ -41,11 +39,6 @@ veryclean : clean
 
 prune :
 	docker system prune --all --force
-
-fetch : $(tarball)
-
-$(tarball) :
-	wget -q -O $(tarball) "https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/$(version)-$(source_release)/$(tarball)"
 
 docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-fedora34 docker-fedora35 docker-macos-x86_64 docker-macos-aarch64
 
@@ -106,15 +99,25 @@ push :
 	docker push librewolf/bsys5-image-macos-x86_64
 	docker push librewolf/bsys5-image-macos-aarch64
 
-work : $(tarball)
-	mkdir work
-	(cd work && tar xf ../$(tarball))
-
 update :
 	@wget -q -O version "https://gitlab.com/librewolf-community/browser/source/-/raw/main/version"
 	@wget -q -O source_release "https://gitlab.com/librewolf-community/browser/source/-/raw/main/release"
 	@echo Source version: $(shell cat version)-$(shell cat source_release)
 	@echo Bsys5 release: $(shell cat release)
+
+
+
+
+
+## setting up the work folder
+tarball=librewolf-$(version)-$(source_release).source.tar.gz
+$(tarball) :
+	wget -q -O $(tarball) "https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/$(version)-$(source_release)/$(tarball)"
+work : $(tarball)
+	mkdir work
+	(cd work && tar xf ../$(tarball))
+
+
 
 
 #
@@ -124,37 +127,37 @@ update :
 ## debian11
 docker-debian11 :
 	${MAKE} -f assets/linux.mk distro=debian11 "distro_image=debian:bullseye" docker
-debian11 : work
+debian11 :
 	${MAKE} -f assets/linux.mk distro=debian11 build
 	${MAKE} -f assets/linux.artifacts.mk distro=debian11 artifacts-deb
 ## mint20
 docker-mint20 :
 	${MAKE} -f assets/linux.mk distro=mint20 "distro_image=linuxmintd/mint20.2-amd64" docker
-mint20 : work
+mint20 :
 	${MAKE} -f assets/linux.mk distro=mint20 build
 	${MAKE} -f assets/linux.artifacts.mk distro=mint20 artifacts-deb
 ## ubuntu20
 docker-ubuntu20 :
 	${MAKE} -f assets/linux.mk distro=ubuntu20 "distro_image=ubuntu:20.04" docker
-ubuntu20 : work
+ubuntu20 :
 	${MAKE} -f assets/linux.mk distro=ubuntu20 build
 	${MAKE} -f assets/linux.artifacts.mk distro=ubuntu20 artifacts-deb
 ## ubuntu21
 docker-ubuntu21 :
 	${MAKE} -f assets/linux.mk distro=ubuntu21 "distro_image=ubuntu:21.10" docker
-ubuntu21 : work
+ubuntu21 :
 	${MAKE} -f assets/linux.mk distro=ubuntu21 build
 	${MAKE} -f assets/linux.artifacts.mk distro=ubuntu21 artifacts-deb
 ## fedora34
 docker-fedora34 :
 	${MAKE} -f assets/linux.mk distro=fedora34 "distro_image=fedora:34" docker
-fedora34 : work
+fedora34 :
 	${MAKE} -f assets/linux.mk distro=fedora34 build
 	${MAKE} -f assets/linux.artifacts.mk distro=fedora34 artifacts-rpm
 ## fedora35
 docker-fedora35 :
 	${MAKE} -f assets/linux.mk distro=fedora35 "distro_image=fedora:35" docker
-fedora35 : work
+fedora35 :
 	${MAKE} -f assets/linux.mk distro=fedora35 build
 	${MAKE} -f assets/linux.artifacts.mk distro=fedora35 artifacts-rpm
 
@@ -166,11 +169,11 @@ fedora35 : work
 ## macos-x86_64
 docker-macos-x86_64 :
 	${MAKE} -f assets/macos.mk arch=x86_64 docker
-macos-x86_64 : work
+macos-x86_64 :
 	${MAKE} -f assets/macos.mk arch=x86_64 build
 
 ## macos-aarch64
 docker-macos-aarch64 :
 	${MAKE} -f assets/macos.mk arch=aarch64 docker
-macos-aarch64 : work
+macos-aarch64 :
 	${MAKE} -f assets/macos.mk arch=aarch64 build

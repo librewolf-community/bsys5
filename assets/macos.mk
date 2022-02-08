@@ -17,6 +17,7 @@ docker :
 build : $(outfile) $(outfile).sha256sum
 
 $(outfile) $(outfile).sha256sum :
+	${MAKE} work
 	sed "s/_ARCH_/$(arch)/g" < assets/macos.mozconfig > work/librewolf-$(version)-$(source_release)/mozconfig
 	if [ $(use_docker) = true ]; then \
 		docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-macos-$(arch) sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package" ; \
