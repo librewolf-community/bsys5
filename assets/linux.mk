@@ -15,8 +15,9 @@ outfile=librewolf-$(version)-$(release).en-US.$(distro)-x86_64.tar.bz2
 docker :
 	docker build --build-arg "distro=$(distro_image)" -t librewolf/bsys5-image-$(distro) - < assets/linux.Dockerfile
 
-build :
+build : $(outfile) $(outfile).sha256sum
 
+$(outfile) $(outfile).sha256sum :
 	if [ $(use_docker) = true ]; then \
 		docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(distro) sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package" ; \
 	else \

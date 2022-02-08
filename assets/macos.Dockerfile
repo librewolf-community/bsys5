@@ -6,7 +6,7 @@ ARG arch=error
 
 # version of librewolf we use to bootstrap (does not need to be recent)
 ENV version          96.0.3
-ENV source_release   5
+ENV source_release   6
 
 # we use this wasi version
 ENV wasi_fullversion 14.0

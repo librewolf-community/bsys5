@@ -65,8 +65,36 @@ build :
 	${MAKE} clean
 	${MAKE} macos-x86_64
 	${MAKE} clean
-	${MAKE} fedora35
 	${MAKE} macos-aarch64
+	${MAKE} clean
+
+
+full-build :
+	${MAKE} docker-debian11
+	${MAKE} clean
+	${MAKE} debian11
+	${MAKE} docker-mint20
+	${MAKE} clean
+	${MAKE} mint20
+	${MAKE} docker-ubuntu20
+	${MAKE} clean
+	${MAKE} ubuntu20
+	${MAKE} docker-ubuntu21
+	${MAKE} clean
+	${MAKE} ubuntu21
+	${MAKE} docker-fedora34
+	${MAKE} clean
+	${MAKE} fedora34
+	${MAKE} docker-fedora35
+	${MAKE} clean
+	${MAKE} fedora35
+	${MAKE} docker-macos-x86_64
+	${MAKE} clean
+	${MAKE} macos-x86_64
+	${MAKE} docker-macos-aarch64
+	${MAKE} clean
+	${MAKE} macos-aarch64
+	${MAKE} clean
 
 push :
 	docker push librewolf/bsys5-image-debian11
@@ -98,31 +126,37 @@ docker-debian11 :
 	${MAKE} -f assets/linux.mk distro=debian11 "distro_image=debian:bullseye" docker
 debian11 : work
 	${MAKE} -f assets/linux.mk distro=debian11 build
+	${MAKE} -f assets/linux.artifacts.mk distro=debian11 artifacts-deb
 ## mint20
 docker-mint20 :
 	${MAKE} -f assets/linux.mk distro=mint20 "distro_image=linuxmintd/mint20.2-amd64" docker
 mint20 : work
 	${MAKE} -f assets/linux.mk distro=mint20 build
+	${MAKE} -f assets/linux.artifacts.mk distro=mint20 artifacts-deb
 ## ubuntu20
 docker-ubuntu20 :
 	${MAKE} -f assets/linux.mk distro=ubuntu20 "distro_image=ubuntu:20.04" docker
 ubuntu20 : work
 	${MAKE} -f assets/linux.mk distro=ubuntu20 build
+	${MAKE} -f assets/linux.artifacts.mk distro=ubuntu20 artifacts-deb
 ## ubuntu21
 docker-ubuntu21 :
 	${MAKE} -f assets/linux.mk distro=ubuntu21 "distro_image=ubuntu:21.10" docker
 ubuntu21 : work
 	${MAKE} -f assets/linux.mk distro=ubuntu21 build
+	${MAKE} -f assets/linux.artifacts.mk distro=ubuntu21 artifacts-deb
 ## fedora34
 docker-fedora34 :
 	${MAKE} -f assets/linux.mk distro=fedora34 "distro_image=fedora:34" docker
 fedora34 : work
 	${MAKE} -f assets/linux.mk distro=fedora34 build
+	${MAKE} -f assets/linux.artifacts.mk distro=fedora34 artifacts-rpm
 ## fedora35
 docker-fedora35 :
 	${MAKE} -f assets/linux.mk distro=fedora35 "distro_image=fedora:35" docker
 fedora35 : work
 	${MAKE} -f assets/linux.mk distro=fedora35 build
+	${MAKE} -f assets/linux.artifacts.mk distro=fedora35 artifacts-rpm
 
 
 #
