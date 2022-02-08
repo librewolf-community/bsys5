@@ -4,7 +4,6 @@ FROM debian:bullseye
 
 ARG arch=error
 
-# version of librewolf we use to bootstrap (does not need to be recent)
 ARG version=error
 ARG source_release=error
 
@@ -53,9 +52,9 @@ RUN wget -q -O librewolf-$version-$source_release.source.tar.gz https://gitlab.c
     cp -r clang /root/.mozbuild &&\
     cp -r dmg /root/.mozbuild &&\
     cp -r hfsplus-tools /root/.mozbuild &&\
-    cd / &&\
-    rm -rf librewolf-$version-$source_release librewolf-$version-$source_release.source.tar.g &&\
-    pip install testresources pycairo
+    pip install testresources pycairo &&\
+    cd .. &&\
+    rm -rf librewolf-$version-$source_release librewolf-$version-$source_release.source.tar.gz
 
 # our work happens here, on the host filesystem.
 WORKDIR /work
