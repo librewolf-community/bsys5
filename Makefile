@@ -1,12 +1,15 @@
-.PHONY : help clean veryclean fetch prune docker push build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
+.PHONY : help clean veryclean fetch prune docker push build full-build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
 
 version:=$(shell cat version)
 release:=$(shell cat release)
 source_release:=$(shell cat source_release)
 
 help :
-	@echo "Use: make [help] [docker] [push] [build] [clean] [veryclean]"
-	@echo "          [fetch] [update] [prune]"
+	@echo "Use: make [help]"
+	@echo "          [docker] [push]          - building all docker images"
+	@echo "          [build] [full-build]     - building all artifacts"
+	@echo "          [clean] [veryclean]      - cleaning up"
+	@echo "          [fetch] [update] [prune] - misc."
 	@echo ""
 	@echo "docker targets:" 
 	@echo "  [docker-debian11]"
