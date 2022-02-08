@@ -9,7 +9,7 @@ source_release:=$(shell cat source_release)
 
 use_docker=true
 
-outfile=librewolf-$(version)-$(source_release).en-US.mac.$(arch).dmg
+outfile=librewolf-$(version)-$(release).en-US.mac.$(arch).dmg
 
 docker :
 	docker build --build-arg "arch=$(arch)" --build-arg "version=$(version)" --build-arg "source_release=$(source_release)" -t librewolf/bsys5-image-macos-$(arch) - < assets/macos.Dockerfile
@@ -24,6 +24,6 @@ $(outfile) $(outfile).sha256sum :
 	else \
 		(cd /work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package) ; \
 	fi
-	cp -v work/librewolf-96.0.3-5/obj-$(arch)-apple-darwin/dist/librewolf-$(version)-$(source_release).en-US.mac.dmg $(outfile)
+	cp -v work/librewolf-$(version)-$(source_release)/obj-$(arch)-apple-darwin/dist/librewolf-$(version)-$(source_release).en-US.mac.dmg $(outfile)
 	sha256sum $(outfile) > $(outfile).sha256sum
 	cat $(outfile).sha256sum

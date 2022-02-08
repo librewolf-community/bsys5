@@ -24,6 +24,6 @@ $(outfile) $(outfile).sha256sum :
 	else \
 		(cd /work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package) ; \
 	fi
-	cp -v work/librewolf-$(version)-$(source_release)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 librewolf-$(version)-$(release).en-US.$(distro)-x86_64.tar.bz2 
+	cp -v work/librewolf-$(version)-$(source_release)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 $(outfile)
 	sha256sum $(outfile) > $(outfile).sha256sum
 	cat $(outfile).sha256sum
