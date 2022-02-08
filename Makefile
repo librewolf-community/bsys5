@@ -45,7 +45,7 @@ prune :
 fetch : $(tarball)
 
 $(tarball) :
-	wget -q -O $(tarball) "https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/$(tarball)?job=Build"
+	wget -q -O $(tarball) "https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/$(version)-$(source_release)/$(tarball)"
 
 docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-fedora34 docker-fedora35 docker-macos-x86_64 docker-macos-aarch64
 
