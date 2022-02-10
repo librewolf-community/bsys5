@@ -116,6 +116,8 @@ update :
 tarball=librewolf-$(version)-$(source_release).source.tar.gz
 $(tarball) :
 	wget -q -O $(tarball) "https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/$(version)-$(source_release)/$(tarball)"
+	wget -q -O $(tarball).sha256sum "https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/$(version)-$(source_release)/$(tarball).sha256sum"
+	sha256sum -c $(tarball).sha256sum
 work : $(tarball)
 	mkdir work
 	(cd work && tar xf ../$(tarball))
