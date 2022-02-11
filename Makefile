@@ -37,8 +37,10 @@ clean :
 	sudo rm -rf work
 
 veryclean : clean
-	rm -f $(tarball)
+	rm -f $(tarball) $(tarball).sha256sum
 	rm -f librewolf-*-*.en-US.*-x86_64.tar.bz2 librewolf-*-*.en-US.*-x86_64.tar.bz2.sha256sum librewolf-*-*.en-US.mac.*
+	rm -f librewolf-*-*.en-US.*.x86_64.deb librewolf-*-*.en-US.*.x86_64.deb.sha256sum
+	rm -f librewolf-*-*.*.x86_64.rpm librewolf-*-*.*.x86_64.rpm.sha256sum
 
 prune :
 	docker system prune --all --force
