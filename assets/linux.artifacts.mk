@@ -23,6 +23,7 @@ librewolf-$(version)-$(release).en-US.$(distro).x86_64.deb : $(infile)
 	mkdir -p work
 	(cd work && tar xf ../$<)
 	cp -v assets/linux.build-deb.sh work/
+	(cd work && sed "s/MYDIR/\/usr\/share\/librewolf/g" < ../assets/linux.librewolf.desktop.in > start-librewolf.desktop)
 	if [ $(use_docker) = true ]; then \
 		docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(distro) sh -c "bash linux.build-deb.sh $(version) $(release)" ; \
 	else \
