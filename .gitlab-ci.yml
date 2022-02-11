@@ -1,0 +1,42 @@
+stages:
+ - build
+
+Build:
+  stage: build
+  when: manual
+  allow_failure: false
+  parallel:
+    matrix:
+      - DISTRO:
+          - debian11
+          - ubuntu20
+          - ubuntu21
+          - mint20
+          - fedora34
+          - fedora35
+          - macos-x86_64
+          - macos-aarch64
+  variables:
+    SOURCE_URL: $SOURCE_URL
+    use_docker: "false"
+  image: librewolf/bsys4-buildenv-$DISTRO
+  tags:
+    # Build on dedicated runner
+    - dedicated
+  except:
+    - merge_requests
+  script:
+    - make $DISTRO
+    - echo VERSION=$(cat version) >> variables.env
+    - echo RELEASE=$(cat release) >> variables.env
+  artifacts:
+    paths:
+      - librewolf-*.deb
+      - librewolf-*.deb.sha256sum
+      - librewolf-*.rpm
+      - librewolf-*.rpm.sha256sum
+      - librewolf-*.dmg
+      - librewolf-*.dmg.sha256sum
+    reports:
+      dotenv: variables.env
+
