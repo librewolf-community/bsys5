@@ -26,7 +26,7 @@ librewolf-$(version)-$(release).en-US.$(distro).x86_64.deb : $(infile)
 	if [ $(use_docker) = true ]; then \
 		docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(distro) sh -c "bash linux.build-deb.sh $(version) $(release)" ; \
 	else \
-		(cd wrok && bash linux.build-deb.sh $(version) $(release)) ; \
+		(cd work && bash linux.build-deb.sh $(version) $(release)) ; \
 	fi
 	cp -v work/librewolf.deb $@
 	sha256sum $@ > $@.sha256sum
