@@ -1,4 +1,4 @@
-.PHONY : help clean veryclean fetch prune docker push build full-build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
+.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -6,10 +6,10 @@ source_release:=$(shell cat source_release)
 
 help :
 	@echo "Use: make [help]"
-	@echo "          [docker] [push]          - building all docker images"
-	@echo "          [build] [full-build]     - building all artifacts"
+	@echo "          [docker] [push] [rmi]    - handle docker images"
+	@echo "          [build]                  - building all artifacts"
 	@echo "          [clean] [veryclean]      - cleaning up"
-	@echo "          [fetch] [update] [prune] - misc."
+	@echo "          [update] [prune]         - misc."
 	@echo ""
 	@echo "docker targets:" 
 	@echo "  [docker-debian11]"
@@ -64,34 +64,6 @@ build :
 	${MAKE} macos-aarch64
 	${MAKE} clean
 
-
-full-build :
-	${MAKE} docker-debian11
-	${MAKE} clean
-	${MAKE} debian11
-	${MAKE} docker-mint20
-	${MAKE} clean
-	${MAKE} mint20
-	${MAKE} docker-ubuntu20
-	${MAKE} clean
-	${MAKE} ubuntu20
-	${MAKE} docker-ubuntu21
-	${MAKE} clean
-	${MAKE} ubuntu21
-	${MAKE} docker-fedora34
-	${MAKE} clean
-	${MAKE} fedora34
-	${MAKE} docker-fedora35
-	${MAKE} clean
-	${MAKE} fedora35
-	${MAKE} docker-macos-x86_64
-	${MAKE} clean
-	${MAKE} macos-x86_64
-	${MAKE} docker-macos-aarch64
-	${MAKE} clean
-	${MAKE} macos-aarch64
-	${MAKE} clean
-
 push :
 	docker push librewolf/bsys5-image-debian11
 	docker push librewolf/bsys5-image-mint20
@@ -101,6 +73,16 @@ push :
 	docker push librewolf/bsys5-image-fedora35
 	docker push librewolf/bsys5-image-macos-x86_64
 	docker push librewolf/bsys5-image-macos-aarch64
+
+rmi :
+	docker rmi librewolf/bsys5-image-debian11
+	docker rmi librewolf/bsys5-image-mint20
+	docker rmi librewolf/bsys5-image-ubuntu20
+	docker rmi librewolf/bsys5-image-ubuntu21
+	docker rmi librewolf/bsys5-image-fedora34
+	docker rmi librewolf/bsys5-image-fedora35
+	docker rmi librewolf/bsys5-image-macos-x86_64
+	docker rmi librewolf/bsys5-image-macos-aarch64
 
 update :
 	@wget -q -O version "https://gitlab.com/librewolf-community/browser/source/-/raw/main/version"
@@ -158,13 +140,13 @@ docker-fedora34 :
 	${MAKE} -f assets/linux.mk distro=fedora34 "distro_image=fedora:34" docker
 fedora34 :
 	${MAKE} -f assets/linux.mk distro=fedora34 build
-	${MAKE} -f assets/linux.artifacts.mk distro=fedora34 artifacts-rpm
+	${MAKE} -f assets/linux.artifacts.mk fc=fc34 distro=fedora34 artifacts-rpm
 ## fedora35
 docker-fedora35 :
 	${MAKE} -f assets/linux.mk distro=fedora35 "distro_image=fedora:35" docker
 fedora35 :
 	${MAKE} -f assets/linux.mk distro=fedora35 build
-	${MAKE} -f assets/linux.artifacts.mk distro=fedora35 artifacts-rpm
+	${MAKE} -f assets/linux.artifacts.mk fc=fc35 distro=fedora35 artifacts-rpm
 
 
 #
