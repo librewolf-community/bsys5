@@ -57,7 +57,7 @@ librewolf-$(version)-$(release).$(fc).x86_64.rpm : $(infile)
 	if [ $(use_docker) = true ]; then \
 		docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(distro) sh -c "bash linux.build-rpm.sh $(version) $(release)" ; \
 	else \
-		(cd work && bash linux.build-rpm.sh $(version) $(release)) ; \
+		(cp -r work / && cd work && bash linux.build-rpm.sh $(version) $(release)) ; \
 	fi
 	cp -v work/$@ $@
 	sha256sum $@ > $@.sha256sum
