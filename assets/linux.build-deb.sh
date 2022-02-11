@@ -34,7 +34,7 @@ cd ../..
 mkdir -p usr/share/applications
 mkdir -p usr/share/icons
 cp -v usr/share/librewolf/browser/chrome/icons/default/default64.png usr/share/icons/librewolf.png
-cp -v start-librewolf.desktop usr/share/applications/start-librewolf.desktop
+cp -v ../start-librewolf.desktop usr/share/applications/start-librewolf.desktop
 
 cd ..
 dpkg-deb --build librewolf
