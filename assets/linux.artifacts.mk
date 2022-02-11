@@ -1,4 +1,5 @@
 # $(distro)
+# $(fc)
 # $(use_docker)
 
 .PHONY : artifacts-deb artifacts-rpm
@@ -16,9 +17,6 @@ infile=librewolf-$(version)-$(release).en-US.$(distro)-x86_64.tar.bz2
 #
 
 librewolf-$(version)-$(release).en-US.$(distro).x86_64.deb : $(infile)
-	@echo ""
-	@echo "[debug] Building DEB:" $@ "using as source:" $<
-	@echo ""
 	mkdir -p work
 	(cd work && tar xf ../$<)
 	cp -v assets/linux.build-deb.sh work/
@@ -35,16 +33,11 @@ artifacts-deb : $(infile) $(infile).sha256sum
 	sha256sum -c $(infile).sha256sum
 	${MAKE} -f assets/linux.artifacts.mk distro=$(distro) librewolf-$(version)-$(release).en-US.$(distro).x86_64.deb
 
-
-
 #
 # RPM Based:
 #
 
 librewolf-$(version)-$(release).$(fc).x86_64.rpm : $(infile)
-	@echo ""
-	@echo "[debug] Building RPM:" $@ "using as source:" $<
-	@echo ""
 	mkdir -p work
 	(cd work && tar xf ../$<)
 	cp -v assets/linux.build-rpm.sh work
