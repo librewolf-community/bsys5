@@ -19,7 +19,7 @@ Build:
   variables:
     SOURCE_URL: $SOURCE_URL
     use_docker: "false"
-  image: librewolf/bsys4-buildenv-$DISTRO
+  image: librewolf/bsys5-buildenv-$DISTRO
   tags:
     # Build on dedicated runner
     - dedicated
