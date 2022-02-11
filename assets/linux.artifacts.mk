@@ -17,7 +17,22 @@ infile=librewolf-$(version)-$(release).en-US.$(distro)-x86_64.tar.bz2
 
 
 librewolf-$(version)-$(release).en-US.$(distro).x86_64.deb : $(infile)
-	@echo "[debug] Building DEB:"
+	@echo "[debug] Building DEB:" $@ "using as source:" $<
+
+	mkdir -p work
+	(cd work && tar xf ../$<)
+	cp -v assets/linux.build-deb.sh work/
+	sed "s/MYDIR/\/usr\/share\/librewolf/g" < assets/linux.librewolf.desktop.in > work/start-librewolf.desktop
+	if [ $(use_docker) = true ]; then \
+		docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(distro) sh -c "bash linux.build-deb.sh $(version) $(release)" ; \
+	else \
+		(cd work && bash linux.build-deb.sh $(version) $(release)) ; \
+	fi
+	cp -v work/librewolf.deb $@
+	sha256sum $@ > $@.sha256sum
+	cat $@.sha256sum
+
+
 
 artifacts-deb : $(infile) $(infile).sha256sum
 	sha256sum -c $(infile).sha256sum
@@ -39,7 +54,7 @@ artifacts-deb : $(infile) $(infile).sha256sum
 ###### .RPM ######
 
 librewolf-$(version)-$(release).$(fc).x86_64.rpm : $(infile)
-	@echo "[debug] Building RPM:"
+	@echo "[debug] Building RPM:" $@ "using as source:" $<
 
 artifacts-rpm : $(infile) $(infile).sha256sum
 	sha256sum -c $(infile).sha256sum
