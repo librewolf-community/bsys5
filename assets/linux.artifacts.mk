@@ -56,10 +56,10 @@ librewolf-$(version)-$(release).$(fc).x86_64.rpm : $(infile)
 	rm -f work/librewolf/removed-files
 	if [ $(use_docker) = true ]; then \
 		docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(distro) sh -c "bash linux.build-rpm.sh $(version) $(release)" ; \
-		cp -v work/$@ $@ \
+		cp -v work/$@ $@ ; \
 	else \
 		(cp -r work / && cd work && bash linux.build-rpm.sh $(version) $(release)) ; \
-		cp -v /work/$@ $@ \
+		cp -v /work/$@ $@ ; \
 	fi
 	sha256sum $@ > $@.sha256sum
 	cat $@.sha256sum
