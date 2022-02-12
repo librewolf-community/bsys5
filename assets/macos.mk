@@ -25,7 +25,7 @@ $(outfile) $(outfile).sha256sum :
 	if [ $(use_docker) = true ]; then \
 		docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-macos-$(arch) sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package" ; \
 	else \
-		(cd /work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package) ; \
+		(cd work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package) ; \
 	fi
 	cp -v work/librewolf-$(version)-$(source_release)/obj-$(arch)-apple-darwin/dist/librewolf-$(version)-$(source_release).en-US.mac.dmg $(outfile)
 	sha256sum $(outfile) > $(outfile).sha256sum
