@@ -1,6 +1,6 @@
 stages:
- - build
- - release
+  - build
+  - release
 
 Build:
   stage: build
@@ -50,7 +50,7 @@ Release:
     - job: "Build"
       artifacts: true
   only:
-    - main
+    - master
   except:
     - merge_requests
   before_script:
@@ -135,4 +135,3 @@ Release:
         - name: macOS aarch64 (sha256sum)
           link_type: other
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
-
