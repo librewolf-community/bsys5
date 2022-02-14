@@ -1,5 +1,6 @@
 stages:
  - build
+ - release
 
 Build:
   stage: build
@@ -39,4 +40,100 @@ Build:
       - librewolf-*.dmg.sha256sum
     reports:
       dotenv: variables.env
+
+
+Release:
+  stage: release
+  when: manual
+  allow_failure: false
+  image: ubuntu
+  needs:
+    - job: "Build"
+      artifacts: true
+  only:
+    - main
+  except:
+    - merge_requests
+  before_script:
+    - apt-get update
+    - apt-get install -y curl
+    - curl -L --output /usr/local/bin/release-cli "https://release-cli-downloads.s3.amazonaws.com/latest/release-cli-linux-amd64"
+    - chmod +x /usr/local/bin/release-cli
+  script:
+    - |
+      function upload_package() {
+        curl \
+          --header "JOB-TOKEN: $CI_JOB_TOKEN" \
+          --upload-file "artifacts/$1/$2" \
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/$2"
+      }
+      upload_package debian11      librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb
+      upload_package debian11      librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb.sha256sum
+      upload_package ubuntu20      librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb
+      upload_package ubuntu20      librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb.sha256sum
+      upload_package ubuntu21      librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb
+      upload_package ubuntu21      librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb.sha256sum
+      upload_package mint20        librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb
+      upload_package mint20        librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb.sha256sum
+      upload_package fedora34      librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm 
+      upload_package fedora34      librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm.sha256sum
+      upload_package fedora35      librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm
+      upload_package fedora35      librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm.sha256sum
+      upload_package macos-x86_64  librewolf-$VERSION-$RELEASE.mac.x86_64.dmg
+      upload_package macos-x86_64  librewolf-$VERSION-$RELEASE.mac.x86_64.dmg.sha256sum
+      upload_package macos-aarch64 librewolf-$VERSION-$RELEASE.mac.aarch64.dmg
+      upload_package macos-aarch64 librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
+  release:
+    tag_name: "$VERSION-$RELEASE"
+    description: "LibreWolf v$VERSION-$RELEASE"
+    assets:
+      links:
+        - name: Debian 11 (deb)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb
+        - name: Debian 11 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb.sha256sum
+        - name: Ubuntu 20 (deb)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb
+        - name: Ubuntu 20 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb.sha256sum
+        - name: Ubuntu 21 (deb)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb
+        - name: Ubuntu 21 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb.sha256sum
+        - name: Linux Mint 20 (deb)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb
+        - name: Linux Mint 20 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb.sha256sum
+        - name: Fedora 34 (rpm)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm
+        - name: Fedora 34 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm.sha256sum
+        - name: Fedora 35 (rpm)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm
+        - name: Fedora 35 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm.sha256sum
+        - name: macOS x86_64 (dmg)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.x86_64.dmg
+        - name: macOS x86_64 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.x86_64.dmg.sha256sum
+        - name: macOS aarch64 (dmg)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.aarch64.dmg
+        - name: macOS aarch64 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
 
