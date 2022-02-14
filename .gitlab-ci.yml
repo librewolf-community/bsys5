@@ -41,7 +41,6 @@ Build:
     reports:
       dotenv: variables.env
 
-
 Release:
   stage: release
   when: manual
