@@ -1,6 +1,7 @@
 stages:
   - build
   - release
+  - deploy
 
 Build:
   stage: build
@@ -63,28 +64,28 @@ Release:
       function upload_package() {
         curl \
           --header "JOB-TOKEN: $CI_JOB_TOKEN" \
-          --upload-file "artifacts/$1/$2" \
-          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/$2"
+          --upload-file "$1" \
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/$1"
       }
-      upload_package debian11      librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb
-      upload_package debian11      librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb.sha256sum
-      upload_package ubuntu20      librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb
-      upload_package ubuntu20      librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb.sha256sum
-      upload_package ubuntu21      librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb
-      upload_package ubuntu21      librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb.sha256sum
-      upload_package mint20        librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb
-      upload_package mint20        librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb.sha256sum
-      upload_package fedora34      librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm 
-      upload_package fedora34      librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm.sha256sum
-      upload_package fedora35      librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm
-      upload_package fedora35      librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm.sha256sum
-      upload_package macos-x86_64  librewolf-$VERSION-$RELEASE.mac.x86_64.dmg
-      upload_package macos-x86_64  librewolf-$VERSION-$RELEASE.mac.x86_64.dmg.sha256sum
-      upload_package macos-aarch64 librewolf-$VERSION-$RELEASE.mac.aarch64.dmg
-      upload_package macos-aarch64 librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb
+      upload_package librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb
+      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb
+      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb
+      upload_package librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm 
+      upload_package librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm
+      upload_package librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.mac.x86_64.dmg
+      upload_package librewolf-$VERSION-$RELEASE.mac.x86_64.dmg.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.mac.aarch64.dmg
+      upload_package librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
   release:
     tag_name: "$VERSION-$RELEASE"
-    description: "LibreWolf v$VERSION-$RELEASE"
+    description: "## LibreWolf bsys5 Release v$VERSION-$RELEASE\n\n- \n\n(Built on GitLab by pipeline [$CI_PIPELINE_ID](https://gitlab.com/librewolf-community/browser/bsys5/-/pipelines/$CI_PIPELINE_ID))"
     assets:
       links:
         - name: Debian 11 (deb)
@@ -135,3 +136,9 @@ Release:
         - name: macOS aarch64 (sha256sum)
           link_type: other
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
+
+Update Repositories:
+  stage: deploy
+  image: curlimages/curl
+  script:
+    - curl https://shorsh.de/update_lw_repos.php?version=$(cat version)-$(cat release)&log=true&token=$REPO_DEPLOY_TOKEN
