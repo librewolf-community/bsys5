@@ -85,7 +85,7 @@ Release:
       upload_package macos-aarch64 librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
   release:
     tag_name: "$VERSION-$RELEASE"
-    description: "LibreWolf v$VERSION-$RELEASE"
+    description: "## LibreWolf bsys5 Release v$VERSION-$RELEASE\n\n- \n\n(Built on GitLab by pipeline [$CI_PIPELINE_ID](https://gitlab.com/librewolf-community/browser/bsys5/-/pipelines/$CI_PIPELINE_ID))"
     assets:
       links:
         - name: Debian 11 (deb)
