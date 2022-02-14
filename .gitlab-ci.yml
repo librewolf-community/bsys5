@@ -1,6 +1,7 @@
 stages:
   - build
   - release
+  - deploy
 
 Build:
   stage: build
@@ -135,3 +136,9 @@ Release:
         - name: macOS aarch64 (sha256sum)
           link_type: other
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
+
+Update Repositories:
+  stage: deploy
+  image: curlimages/curl
+  script:
+    - curl https://shorsh.de/update_lw_repos.php?version=$(cat version)-$(cat release)&log=true&token=$REPO_DEPLOY_TOKEN
