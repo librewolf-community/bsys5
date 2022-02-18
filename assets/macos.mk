@@ -12,7 +12,7 @@ ifeq ($(use_docker),)
 use_docker:=true
 endif
 
-outfile=librewolf-$(version)-$(release).mac.$(arch).dmg
+outfile=librewolf-$(version)-$(release).en-US.mac.$(arch).dmg
 
 docker :
 	docker build --build-arg "arch=$(arch)" --build-arg "version=$(version)" --build-arg "source_release=$(source_release)" -t librewolf/bsys5-image-macos-$(arch) - < assets/macos.Dockerfile

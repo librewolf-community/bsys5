@@ -79,10 +79,10 @@ Release:
       upload_package librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm.sha256sum
       upload_package librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm
       upload_package librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.mac.x86_64.dmg
-      upload_package librewolf-$VERSION-$RELEASE.mac.x86_64.dmg.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.mac.aarch64.dmg
-      upload_package librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.en-US.mac.x86_64.dmg
+      upload_package librewolf-$VERSION-$RELEASE.en-US.mac.x86_64.dmg.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.en-US.mac.aarch64.dmg
+      upload_package librewolf-$VERSION-$RELEASE.en-US.mac.aarch64.dmg.sha256sum
   release:
     tag_name: "$VERSION-$RELEASE"
     description: "## LibreWolf bsys5 Release v$VERSION-$RELEASE\n\n- \n\n(Built on GitLab by pipeline [$CI_PIPELINE_ID](https://gitlab.com/librewolf-community/browser/bsys5/-/pipelines/$CI_PIPELINE_ID))"
@@ -126,16 +126,16 @@ Release:
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm.sha256sum
         - name: macOS x86_64 (dmg)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.x86_64.dmg
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mac.x86_64.dmg
         - name: macOS x86_64 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.x86_64.dmg.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mac.x86_64.dmg.sha256sum
         - name: macOS aarch64 (dmg)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.aarch64.dmg
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mac.aarch64.dmg
         - name: macOS aarch64 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.mac.aarch64.dmg.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mac.aarch64.dmg.sha256sum
 
 Update Repositories:
   stage: deploy
