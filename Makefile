@@ -20,6 +20,7 @@ help :
 	@echo "  [docker-fedora35]"
 	@echo "  [docker-macos-x86_64]"
 	@echo "  [docker-macos-aarch64]"
+	@echo "  [docker-win64]"
 	@echo ""
 	@echo "build targets:" 
 	@echo "  [debian11]"
@@ -30,6 +31,7 @@ help :
 	@echo "  [fedora35]"
 	@echo "  [macos-x64_64]"
 	@echo "  [macos-aarch64]"
+	@echo "  [win64]"
 	@echo ""
 
 
@@ -166,3 +168,12 @@ docker-macos-aarch64 :
 	${MAKE} -f assets/macos.mk arch=aarch64 docker
 macos-aarch64 :
 	${MAKE} -f assets/macos.mk arch=aarch64 build
+
+#
+# Windows
+#
+
+docker-win64 :
+	${MAKE} -f assets/windows.mk docker
+win64 :
+	${MAKE} -f assets/windows.mk build
