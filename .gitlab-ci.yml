@@ -139,9 +139,12 @@ Release:
 
 Update Repositories:
   stage: deploy
-  image: curlimages/curl
   needs:
     - job: "Build"
-      artifacts: true
+    - job: "Release"
+  image: ubuntu
+  before_script:
+    - apt-get update
+    - apt-get install -y curl
   script:
-    - curl https://shorsh.de/update_lw_repos.php?version=$VERSION-$RELEASE&log=true&token=$REPO_DEPLOY_TOKEN
+    - curl https://shorsh.de/update_lw_repos.php?version=$(cat version)-$(cat release)&log=true&token=$REPO_DEPLOY_TOKEN
