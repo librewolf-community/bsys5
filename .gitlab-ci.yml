@@ -23,6 +23,7 @@ Build:
     use_docker: "false"
   image: librewolf/bsys5-image-$DISTRO
   tags:
+    - amd64
     # Build on dedicated runner
     - dedicated
   except:
