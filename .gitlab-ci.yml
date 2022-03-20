@@ -148,4 +148,4 @@ Update Repositories:
     - apt-get update
     - apt-get install -y curl
   script:
-    - curl https://shorsh.de/update_lw_repos.php?version=$(cat version)-$(cat release)&log=true&token=$REPO_DEPLOY_TOKEN
+    - curl "https://shorsh.de/update_lw_repos.php?version=$(cat version)-$(cat release)&log=true&token=$REPO_DEPLOY_TOKEN"
