@@ -26,9 +26,15 @@ RUN true
 RUN wget -q -O librewolf-$version-$source_release.source.tar.gz https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/librewolf-$version-$source_release.source.tar.gz?job=Build
 RUN tar xf librewolf-$version-$source_release.source.tar.gz
 WORKDIR librewolf-$version-$source_release
-RUN    MOZBUILD_STATE_PATH=$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser
-RUN    /root/.cargo/bin/cargo install cbindgen
+RUN echo "ac_add_options --target=x86_64-pc-mingw32" > mozconfig
+RUN echo "ac_add_options --enable-bootstrap" > mozconfig
+RUN echo "" > mozconfig
+RUN MOZBUILD_STATE_PATH=$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser
+RUN /root/.cargo/bin/cargo install cbindgen
+RUN /root/.cargo/bin/rustup target add x86_64-pc-mingw32
 
+# not sure about this one..
+RUN pip install testresources pycairo
 
 # our work happens here, on the host filesystem.
 WORKDIR /work
