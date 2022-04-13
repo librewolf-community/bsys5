@@ -143,6 +143,10 @@ Update Repositories:
   needs:
     - job: "Build"
     - job: "Release"
+  only:
+    - master
+  except:
+    - merge_requests
   image: ubuntu
   before_script:
     - apt-get update
