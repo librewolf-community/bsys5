@@ -1,4 +1,4 @@
-.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
+.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-ubuntu22 ubuntu22 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -16,6 +16,7 @@ help :
 	@echo "  [docker-mint20]"
 	@echo "  [docker-ubuntu20]"
 	@echo "  [docker-ubuntu21]"
+	@echo "  [docker-ubuntu22]"
 	@echo "  [docker-fedora34]"
 	@echo "  [docker-fedora35]"
 	@echo "  [docker-macos-x86_64]"
@@ -26,6 +27,7 @@ help :
 	@echo "  [mint20]"
 	@echo "  [ubuntu20]"
 	@echo "  [ubuntu21]"
+	@echo "  [ubuntu22]"
 	@echo "  [fedora34]"
 	@echo "  [fedora35]"
 	@echo "  [macos-x64_64]"
@@ -45,7 +47,7 @@ veryclean : clean
 prune :
 	docker system prune --all --force
 
-docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-fedora34 docker-fedora35 docker-macos-x86_64 docker-macos-aarch64
+docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-ubuntu22 docker-fedora34 docker-fedora35 docker-macos-x86_64 docker-macos-aarch64
 
 build :
 	${MAKE} clean
@@ -56,6 +58,8 @@ build :
 	${MAKE} ubuntu20
 	${MAKE} clean
 	${MAKE} ubuntu21
+	${MAKE} clean
+	${MAKE} ubuntu22
 	${MAKE} clean
 	${MAKE} fedora34
 	${MAKE} clean
@@ -71,6 +75,7 @@ push :
 	docker push librewolf/bsys5-image-mint20
 	docker push librewolf/bsys5-image-ubuntu20
 	docker push librewolf/bsys5-image-ubuntu21
+	docker push librewolf/bsys5-image-ubuntu22
 	docker push librewolf/bsys5-image-fedora34
 	docker push librewolf/bsys5-image-fedora35
 	docker push librewolf/bsys5-image-macos-x86_64
@@ -81,6 +86,7 @@ rmi :
 	docker rmi librewolf/bsys5-image-mint20
 	docker rmi librewolf/bsys5-image-ubuntu20
 	docker rmi librewolf/bsys5-image-ubuntu21
+	docker rmi librewolf/bsys5-image-ubuntu22
 	docker rmi librewolf/bsys5-image-fedora34
 	docker rmi librewolf/bsys5-image-fedora35
 	docker rmi librewolf/bsys5-image-macos-x86_64
@@ -127,16 +133,22 @@ mint20 :
 	${MAKE} -f assets/linux.artifacts.mk distro=mint20 artifacts-deb
 ## ubuntu20
 docker-ubuntu20 :
-	${MAKE} -f assets/linux.mk distro=ubuntu20 "distro_image=ubuntu:20.04" docker
+	${MAKE} -f assets/linux.mk distro=ubuntu20 "distro_image=ubuntu:focal" docker
 ubuntu20 :
 	${MAKE} -f assets/linux.mk distro=ubuntu20 build
 	${MAKE} -f assets/linux.artifacts.mk distro=ubuntu20 artifacts-deb
 ## ubuntu21
 docker-ubuntu21 :
-	${MAKE} -f assets/linux.mk distro=ubuntu21 "distro_image=ubuntu:21.10" docker
+	${MAKE} -f assets/linux.mk distro=ubuntu21 "distro_image=ubuntu:impish" docker
 ubuntu21 :
 	${MAKE} -f assets/linux.mk distro=ubuntu21 build
 	${MAKE} -f assets/linux.artifacts.mk distro=ubuntu21 artifacts-deb
+## ubuntu22
+docker-ubuntu22 :
+	${MAKE} -f assets/linux.mk distro=ubuntu22 "distro_image=ubuntu:jammy" docker
+ubuntu22 :
+	${MAKE} -f assets/linux.mk distro=ubuntu22 build
+	${MAKE} -f assets/linux.artifacts.mk distro=ubuntu22 artifacts-deb
 ## fedora34
 docker-fedora34 :
 	${MAKE} -f assets/linux.mk distro=fedora34 "distro_image=fedora:34" docker
