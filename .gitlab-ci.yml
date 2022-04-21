@@ -13,6 +13,7 @@ Build:
           - debian11
           - ubuntu20
           - ubuntu21
+          - ubuntu22
           - mint20
           - fedora34
           - fedora35
@@ -74,6 +75,8 @@ Release:
       upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb.sha256sum
       upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb
       upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb.sha256sum
+      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu22.x86_64.deb
+      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu22.x86_64.deb.sha256sum
       upload_package librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb
       upload_package librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb.sha256sum
       upload_package librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm 
@@ -107,6 +110,12 @@ Release:
         - name: Ubuntu 21 (sha256sum)
           link_type: other
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb.sha256sum
+        - name: Ubuntu 22 (deb)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu22.x86_64.deb
+        - name: Ubuntu 22 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu22.x86_64.deb.sha256sum
         - name: Linux Mint 20 (deb)
           link_type: package
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb
