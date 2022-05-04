@@ -18,9 +18,9 @@ $(outfile) $(outfile).sha256sum :
 	${MAKE} work
 	sed "s/_ARCH_/$(arch)/g" < assets/macos.mozconfig > work/librewolf-$(version)-$(source_release)/mozconfig
 ifeq ($(use_docker),false)
-	(cd work/librewolf-$(version)-$(source_release) && ./mach build && ./mach build  && ./mach package && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
+	(cd work/librewolf-$(version)-$(source_release) && ./mach build && ./mach build  && ./mach package ; cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
 else
-	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-macos-$(arch) sh -c "cd /work/librewolf-$(version)-$(source_release)  && ./mach package && ./mach build && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales"
+	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-macos-$(arch) sh -c "cd /work/librewolf-$(version)-$(source_release)  && ./mach package && ./mach build ; cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales"
 endif
 	cp -v work/librewolf-$(version)-$(source_release)/obj-$(arch)-apple-darwin/dist/librewolf-$(version)-$(source_release).en-US.mac.dmg $(outfile)
 	sha256sum $(outfile) > $(outfile).sha256sum
