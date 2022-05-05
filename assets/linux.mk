@@ -7,8 +7,9 @@
 version:=$(shell cat version)
 release:=$(shell cat release)
 source_release:=$(shell cat source_release)
+full_version:=$(version)-$(source_release)$(shell [ $(release) -gt 1 ] && echo "-$(release)")
 
-outfile=librewolf-$(version)-$(release).en-US.$(distro)-x86_64.tar.bz2
+outfile=librewolf-$(full_version).en-US.$(distro)-x86_64.tar.bz2
 
 docker :
 	docker build --build-arg "distro=$(distro_image)" --build-arg "version=$(version)" --build-arg "source_release=$(source_release)" -t librewolf/bsys5-image-$(distro) - < assets/linux.Dockerfile
