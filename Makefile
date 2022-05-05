@@ -3,6 +3,7 @@
 version:=$(shell cat version)
 release:=$(shell cat release)
 source_release:=$(shell cat source_release)
+full_version:=$(version)-$(source_release)$(shell [ $(release) -gt 1 ] && echo "-$(release)")
 
 help :
 	@echo "Use: make [help]"
