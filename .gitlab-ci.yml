@@ -69,7 +69,7 @@ Release:
         curl \
           --header "JOB-TOKEN: $CI_JOB_TOKEN" \
           --upload-file "$1" \
-          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/$1"
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/$1"
       }
       upload_package librewolf-$FILEVER.en-US.debian11.x86_64.deb
       upload_package librewolf-$FILEVER.en-US.debian11.x86_64.deb.sha256sum
@@ -153,6 +153,7 @@ Update Repositories:
   stage: deploy
   needs:
     - job: "Build"
+      artifacts: true
     - job: "Release"
   only:
     - master
@@ -163,4 +164,4 @@ Update Repositories:
     - apt-get update
     - apt-get install -y curl
   script:
-    - curl "https://shorsh.de/update_lw_repos.php?version=$(cat version)-$(cat release)&log=true&token=$REPO_DEPLOY_TOKEN"
+    - curl "https://shorsh.de/update_lw_repos.php?version=$FILEVER&log=true&token=$REPO_DEPLOY_TOKEN"
