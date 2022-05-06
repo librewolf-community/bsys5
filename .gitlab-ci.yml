@@ -33,6 +33,8 @@ Build:
     - make $DISTRO
     - echo VERSION=$(cat version) >> variables.env
     - echo RELEASE=$(cat release) >> variables.env
+    - echo SOURCE_RELEASE=$(cat source_release) >> variables.env
+    - 't=$(cat version)-$(cat source_release) ; grep 1 release ; if [ ! $? ]; then t=$(cat version)-$(cat source_release)-$(cat release); fi; echo FILEVER=$t >> variables.env'
   artifacts:
     paths:
       - librewolf-*.deb
@@ -69,83 +71,83 @@ Release:
           --upload-file "$1" \
           "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/$1"
       }
-      upload_package librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb
-      upload_package librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb
-      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb
-      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu22.x86_64.deb
-      upload_package librewolf-$VERSION-$RELEASE.en-US.ubuntu22.x86_64.deb.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb
-      upload_package librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm 
-      upload_package librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm
-      upload_package librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.en-US.mac.x86_64.dmg
-      upload_package librewolf-$VERSION-$RELEASE.en-US.mac.x86_64.dmg.sha256sum
-      upload_package librewolf-$VERSION-$RELEASE.en-US.mac.aarch64.dmg
-      upload_package librewolf-$VERSION-$RELEASE.en-US.mac.aarch64.dmg.sha256sum
+      upload_package librewolf-$FILEVER.en-US.debian11.x86_64.deb
+      upload_package librewolf-$FILEVER.en-US.debian11.x86_64.deb.sha256sum
+      upload_package librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb
+      upload_package librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb.sha256sum
+      upload_package librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb
+      upload_package librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb.sha256sum
+      upload_package librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb
+      upload_package librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb.sha256sum
+      upload_package librewolf-$FILEVER.en-US.mint20.x86_64.deb
+      upload_package librewolf-$FILEVER.en-US.mint20.x86_64.deb.sha256sum
+      upload_package librewolf-$FILEVER.fc34.x86_64.rpm 
+      upload_package librewolf-$FILEVER.fc34.x86_64.rpm.sha256sum
+      upload_package librewolf-$FILEVER.fc35.x86_64.rpm
+      upload_package librewolf-$FILEVER.fc35.x86_64.rpm.sha256sum
+      upload_package librewolf-$FILEVER.en-US.mac.x86_64.dmg
+      upload_package librewolf-$FILEVER.en-US.mac.x86_64.dmg.sha256sum
+      upload_package librewolf-$FILEVER.en-US.mac.aarch64.dmg
+      upload_package librewolf-$FILEVER.en-US.mac.aarch64.dmg.sha256sum
   release:
-    tag_name: "$VERSION-$RELEASE"
-    description: "## LibreWolf bsys5 Release v$VERSION-$RELEASE\n\n- \n\n(Built on GitLab by pipeline [$CI_PIPELINE_ID](https://gitlab.com/librewolf-community/browser/bsys5/-/pipelines/$CI_PIPELINE_ID))"
+    tag_name: "$FILEVER"
+    description: "## LibreWolf bsys5 Release v$FILEVER\n\n- \n\n(Built on GitLab by pipeline [$CI_PIPELINE_ID](https://gitlab.com/librewolf-community/browser/bsys5/-/pipelines/$CI_PIPELINE_ID))"
     assets:
       links:
         - name: Debian 11 (deb)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.debian11.x86_64.deb
         - name: Debian 11 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.debian11.x86_64.deb.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.debian11.x86_64.deb.sha256sum
         - name: Ubuntu 20 (deb)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb
         - name: Ubuntu 20 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu20.x86_64.deb.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb.sha256sum
         - name: Ubuntu 21 (deb)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb
         - name: Ubuntu 21 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu21.x86_64.deb.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb.sha256sum
         - name: Ubuntu 22 (deb)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu22.x86_64.deb
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb
         - name: Ubuntu 22 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.ubuntu22.x86_64.deb.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb.sha256sum
         - name: Linux Mint 20 (deb)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mint20.x86_64.deb
         - name: Linux Mint 20 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mint20.x86_64.deb.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mint20.x86_64.deb.sha256sum
         - name: Fedora 34 (rpm)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc34.x86_64.rpm
         - name: Fedora 34 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.fc34.x86_64.rpm.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc34.x86_64.rpm.sha256sum
         - name: Fedora 35 (rpm)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc35.x86_64.rpm
         - name: Fedora 35 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.fc35.x86_64.rpm.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc35.x86_64.rpm.sha256sum
         - name: macOS x86_64 (dmg)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mac.x86_64.dmg
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mac.x86_64.dmg
         - name: macOS x86_64 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mac.x86_64.dmg.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mac.x86_64.dmg.sha256sum
         - name: macOS aarch64 (dmg)
           link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mac.aarch64.dmg
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mac.aarch64.dmg
         - name: macOS aarch64 (sha256sum)
           link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$VERSION-$RELEASE/librewolf-$VERSION-$RELEASE.en-US.mac.aarch64.dmg.sha256sum
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mac.aarch64.dmg.sha256sum
 
 Update Repositories:
   stage: deploy
