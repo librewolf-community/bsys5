@@ -17,6 +17,7 @@ Build:
           - mint20
           - fedora34
           - fedora35
+          - fedora36
           - macos-x86_64
           - macos-aarch64
   variables:
@@ -34,7 +35,7 @@ Build:
     - echo VERSION=$(cat version) >> variables.env
     - echo RELEASE=$(cat release) >> variables.env
     - echo SOURCE_RELEASE=$(cat source_release) >> variables.env
-    - 't=$(cat version)-$(cat source_release) ; grep 1 release ; if [ ! $? ]; then t=$(cat version)-$(cat source_release)-$(cat release); fi; echo FILEVER=$t >> variables.env'
+    - "t=$(cat version)-$(cat source_release) ; grep 1 release ; if [ ! $? ]; then t=$(cat version)-$(cat source_release)-$(cat release); fi; echo FILEVER=$t >> variables.env"
   artifacts:
     paths:
       - librewolf-*.deb
@@ -85,6 +86,8 @@ Release:
       upload_package librewolf-$FILEVER.fc34.x86_64.rpm.sha256sum
       upload_package librewolf-$FILEVER.fc35.x86_64.rpm
       upload_package librewolf-$FILEVER.fc35.x86_64.rpm.sha256sum
+      upload_package librewolf-$FILEVER.fc36.x86_64.rpm
+      upload_package librewolf-$FILEVER.fc36.x86_64.rpm.sha256sum
       upload_package librewolf-$FILEVER.en-US.mac.x86_64.dmg
       upload_package librewolf-$FILEVER.en-US.mac.x86_64.dmg.sha256sum
       upload_package librewolf-$FILEVER.en-US.mac.aarch64.dmg
@@ -136,6 +139,12 @@ Release:
         - name: Fedora 35 (sha256sum)
           link_type: other
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc35.x86_64.rpm.sha256sum
+        - name: Fedora 36 (rpm)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc36.x86_64.rpm
+        - name: Fedora 36 (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc36.x86_64.rpm.sha256sum
         - name: macOS x86_64 (dmg)
           link_type: package
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mac.x86_64.dmg

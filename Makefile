@@ -1,4 +1,4 @@
-.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-ubuntu22 ubuntu22 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
+.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-ubuntu22 ubuntu22 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-fedora36 fedora36 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -20,6 +20,7 @@ help :
 	@echo "  [docker-ubuntu22]"
 	@echo "  [docker-fedora34]"
 	@echo "  [docker-fedora35]"
+	@echo "  [docker-fedora36]"
 	@echo "  [docker-macos-x86_64]"
 	@echo "  [docker-macos-aarch64]"
 	@echo ""
@@ -31,6 +32,7 @@ help :
 	@echo "  [ubuntu22]"
 	@echo "  [fedora34]"
 	@echo "  [fedora35]"
+	@echo "  [fedora36]"
 	@echo "  [macos-x64_64]"
 	@echo "  [macos-aarch64]"
 	@echo ""
@@ -48,7 +50,7 @@ veryclean : clean
 prune :
 	docker system prune --all --force
 
-docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-ubuntu22 docker-fedora34 docker-fedora35 docker-macos-x86_64 docker-macos-aarch64
+docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-ubuntu22 docker-fedora34 docker-fedora35 docker-fedora36 docker-macos-x86_64 docker-macos-aarch64
 
 build :
 	${MAKE} clean
@@ -66,6 +68,8 @@ build :
 	${MAKE} clean
 	${MAKE} fedora35
 	${MAKE} clean
+	${MAKE} fedora36
+	${MAKE} clean
 	${MAKE} macos-x86_64
 	${MAKE} clean
 	${MAKE} macos-aarch64
@@ -79,6 +83,7 @@ push :
 	docker push librewolf/bsys5-image-ubuntu22
 	docker push librewolf/bsys5-image-fedora34
 	docker push librewolf/bsys5-image-fedora35
+	docker push librewolf/bsys5-image-fedora36
 	docker push librewolf/bsys5-image-macos-x86_64
 	docker push librewolf/bsys5-image-macos-aarch64
 
@@ -90,6 +95,7 @@ rmi :
 	docker rmi librewolf/bsys5-image-ubuntu22
 	docker rmi librewolf/bsys5-image-fedora34
 	docker rmi librewolf/bsys5-image-fedora35
+	docker rmi librewolf/bsys5-image-fedora36
 	docker rmi librewolf/bsys5-image-macos-x86_64
 	docker rmi librewolf/bsys5-image-macos-aarch64
 
@@ -162,6 +168,12 @@ docker-fedora35 :
 fedora35 :
 	${MAKE} -f assets/linux.mk distro=fedora35 build
 	${MAKE} -f assets/linux.artifacts.mk fc=fc35 distro=fedora35 artifacts-rpm
+## fedora36
+docker-fedora36 :
+	${MAKE} -f assets/linux.mk distro=fedora36 "distro_image=fedora:36" docker
+fedora36 :
+	${MAKE} -f assets/linux.mk distro=fedora36 build
+	${MAKE} -f assets/linux.artifacts.mk fc=fc36 distro=fedora36 artifacts-rpm
 
 
 #
