@@ -11,7 +11,7 @@ full_version:=$(version)-$(source_release)$(shell [ $(release) -gt 1 ] && echo "
 outfile=librewolf-$(full_version).en-US.mac.$(arch).dmg
 
 docker :
-	docker build --build-arg "arch=$(arch)" --build-arg "version=$(version)" --build-arg "source_release=$(source_release)" -t librewolf/bsys5-image-macos-$(arch) - < assets/macos.Dockerfile
+	docker build --build-arg "arch=$(arch)" --build-arg "version=$(version)" --build-arg "source_release=$(source_release)" -t registry.gitlab.com/librewolf-community/browser/bsys5/macos-$(arch) - < assets/macos.Dockerfile
 
 build : $(outfile) $(outfile).sha256sum
 
@@ -21,7 +21,7 @@ $(outfile) :
 ifeq ($(use_docker),false)
 	(cd work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package)
 else
-	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-macos-$(arch) sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package"
+	docker run --rm -v $(shell pwd)/work:/work:rw registry.gitlab.com/librewolf-community/browser/bsys5/macos-$(arch) sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && ./mach package"
 endif
 	cp -v work/librewolf-$(version)-$(source_release)/obj-$(arch)-apple-darwin/dist/librewolf-$(version)-$(source_release).en-US.mac.dmg $(outfile)
 

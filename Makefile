@@ -76,28 +76,28 @@ build :
 	${MAKE} clean
 
 push :
-	docker push librewolf/bsys5-image-debian11
-	docker push librewolf/bsys5-image-mint20
-	docker push librewolf/bsys5-image-ubuntu20
-	docker push librewolf/bsys5-image-ubuntu21
-	docker push librewolf/bsys5-image-ubuntu22
-	docker push librewolf/bsys5-image-fedora34
-	docker push librewolf/bsys5-image-fedora35
-	docker push librewolf/bsys5-image-fedora36
-	docker push librewolf/bsys5-image-macos-x86_64
-	docker push librewolf/bsys5-image-macos-aarch64
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/debian11
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/mint20
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/ubuntu20
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/ubuntu21
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/ubuntu22
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/fedora34
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/fedora35
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/fedora36
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/macos-x86_64
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/macos-aarch64
 
 rmi :
-	docker rmi librewolf/bsys5-image-debian11
-	docker rmi librewolf/bsys5-image-mint20
-	docker rmi librewolf/bsys5-image-ubuntu20
-	docker rmi librewolf/bsys5-image-ubuntu21
-	docker rmi librewolf/bsys5-image-ubuntu22
-	docker rmi librewolf/bsys5-image-fedora34
-	docker rmi librewolf/bsys5-image-fedora35
-	docker rmi librewolf/bsys5-image-fedora36
-	docker rmi librewolf/bsys5-image-macos-x86_64
-	docker rmi librewolf/bsys5-image-macos-aarch64
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/debian11
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/mint20
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/ubuntu20
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/ubuntu21
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/ubuntu22
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/fedora34
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/fedora35
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/fedora36
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/macos-x86_64
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/macos-aarch64
 
 update :
 	@wget -q -O version "https://gitlab.com/librewolf-community/browser/source/-/raw/main/version"

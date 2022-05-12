@@ -23,7 +23,7 @@ librewolf-$(full_version).en-US.$(distro).x86_64.deb : $(infile)
 ifeq ($(use_docker),false)
 	(cd work && bash linux.build-deb.sh $(full_version))
 else
-	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(distro) sh -c "bash linux.build-deb.sh $(full_version)"
+	docker run --rm -v $(shell pwd)/work:/work:rw registry.gitlab.com/librewolf-community/browser/bsys5/$(distro) sh -c "bash linux.build-deb.sh $(full_version)"
 endif
 	cp -v work/librewolf.deb $@
 	sha256sum $@ > $@.sha256sum
@@ -55,7 +55,7 @@ ifeq ($(use_docker),false)
 	(cp -r work / && cd work && bash linux.build-rpm.sh $(fc))
 	cp -v /work/$@ $@
 else
-	docker run --rm -v $(shell pwd)/work:/work:rw librewolf/bsys5-image-$(distro) sh -c "bash linux.build-rpm.sh $(fc)"
+	docker run --rm -v $(shell pwd)/work:/work:rw registry.gitlab.com/librewolf-community/browser/bsys5/$(distro) sh -c "bash linux.build-rpm.sh $(fc)"
 	cp -v work/$@ $@
 endif
 	sha256sum $@ > $@.sha256sum
