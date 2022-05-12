@@ -44,7 +44,6 @@ RUN wget -q -O librewolf-$version-$source_release.source.tar.gz https://gitlab.c
     ./mach artifact toolchain --from-build linux64-cctools-port &&\
     ./mach artifact toolchain --from-build linux64-hfsplus &&\
     ./mach artifact toolchain --from-build linux64-binutils &&\
-    ./mach artifact toolchain --from-build linux64-clang-13-macosx-cross &&\
     /root/.cargo/bin/cargo install cbindgen &&\
     /root/.cargo/bin/rustup target add $arch-apple-darwin  &&\
     cp -r binutils /root/.mozbuild &&\
@@ -55,6 +54,8 @@ RUN wget -q -O librewolf-$version-$source_release.source.tar.gz https://gitlab.c
     pip install testresources pycairo &&\
     cd .. &&\
     rm -rf librewolf-$version-$source_release librewolf-$version-$source_release.source.tar.gz
+
+#    ./mach artifact toolchain --from-build linux64-clang-13-macosx-cross &&\
 
 # our work happens here, on the host filesystem.
 WORKDIR /work
