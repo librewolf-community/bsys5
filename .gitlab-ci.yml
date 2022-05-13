@@ -7,8 +7,8 @@ stages:
 Build Docker Images:
   stage: images
   when: manual
-  # only:
-  #   - master
+  only:
+    - master
   image: ubuntu
   services:
     - docker:dind
