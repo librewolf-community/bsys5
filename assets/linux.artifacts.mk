@@ -19,6 +19,7 @@ librewolf-$(full_version).en-US.$(distro).x86_64.deb : $(infile)
 	mkdir -p work
 	(cd work && tar xf ../$<)
 	cp -v assets/linux.build-deb.sh work/
+	[ "$(SIGNING_KEY)" != "" ] && cp -v $(SIGNING_KEY) work/pk.asc ; true
 	(cd work && sed "s/MYDIR/\/usr\/share\/librewolf/g" < ../assets/linux.librewolf.desktop.in > start-librewolf.desktop)
 ifeq ($(use_docker),false)
 	(cd work && bash linux.build-deb.sh $(full_version))
@@ -47,6 +48,7 @@ librewolf-$(full_version).$(fc).x86_64.rpm : $(infile)
 	cp -v assets/linux.librewolf.spec work/librewolf.spec
 	cp -v assets/linux.librewolf.desktop.in work/librewolf/start-librewolf.desktop.in
 	cp -v assets/linux.librewolf.ico work/librewolf/librewolf.ico
+	[ "$(SIGNING_KEY)" != "" ] && cp -v $(SIGNING_KEY) work/pk.asc ; true
 	rm -f work/librewolf/browser/features/proxy-failover@mozilla.com.xpi
 	rm -f work/librewolf/pingsender
 	rm -f work/librewolf/precomplete
