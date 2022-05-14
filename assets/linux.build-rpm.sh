@@ -1,5 +1,15 @@
 set -e
 
+if [[ -f pk.asc ]]; then
+  echo "--- [debug] Importing private key..."
+  gpg --import pk.asc
+  cat >>~/.rpmmacros <<EOF
+%_signature gpg
+%_gpg_name  LibreWolf Maintainers
+EOF
+  signing="true"
+fi
+
 rm -rf /WORK
 mkdir /WORK
 cd /WORK
@@ -61,12 +71,15 @@ rm -rf $HOME/rpmbuild
 cp -rv rpmbuild $HOME
 
 # Build the package!
-echo '---'
-echo "[debug] Running rpmbuild.."
-echo '---'
-
+echo "--- [debug] Running rpmbuild..."
 rpmbuild -v -bb $(pwd)/rpmbuild/SPECS/librewolf.spec
-echo '--- [debug] Copying output files to /artifacts'
 
+echo '--- [debug] Copying output files to /artifacts'
 #Wrote: /root/rpmbuild/RPMS/x86_64/librewolf-94.0.2-1.fc35.x86_64.rpm
 cp -v ~/rpmbuild/RPMS/x86_64/librewolf-*.rpm /work/librewolf-$full_version.$fc.x86_64.rpm
+
+if [[ "$signing" == "true" ]]; then
+  echo '--- [debug] Signing the RPM'
+  export GPG_TTY=$(tty)
+  rpm --addsign /work/librewolf-*.rpm
+fi

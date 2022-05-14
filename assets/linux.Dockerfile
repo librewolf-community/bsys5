@@ -14,8 +14,8 @@ ENV TZ=Europe/Amsterdam
 
 
 # dependencies needed to run ./mach bootstrap
-RUN ( apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget ; true)
-RUN ( dnf -y upgrade && dnf -y install mercurial python3 python3-devel wget rpm-build ; true)
+RUN ( apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget dpkg-sig ; true)
+RUN ( dnf -y upgrade && dnf -y install mercurial python3 python3-devel wget rpm-build rpm-sign ; true)
 
 # setup wasi
 RUN export target_wasi_location=$HOME/.mozbuild/wrlb/ &&\
