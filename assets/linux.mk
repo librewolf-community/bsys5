@@ -21,7 +21,7 @@ $(outfile) :
 ifeq ($(use_docker),false)
 	(cd work/librewolf-$(version)-$(source_release) && ./mach build && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
 else
-	docker run --rm -v $(shell pwd)/work:/work:rw registry.gitlab.com/librewolf-community/browser/bsys5/$(distro) sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales"
+	docker run --rm -v $(shell pwd)/work:/work:rw registry.gitlab.com/librewolf-community/browser/bsys5/$(distro) sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && echo Packaging... && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales >/dev/null"
 endif
 	cp -v work/librewolf-$(version)-$(source_release)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 $(outfile)
 
