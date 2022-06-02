@@ -161,7 +161,6 @@ Release:
         - name: Linux Mint 20 (sha256sum)
           link_type: other
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mint20.x86_64.deb.sha256sum
-fc34.x86_64.rpm.sha256sum
         - name: Fedora 35 (rpm)
           link_type: package
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc35.x86_64.rpm
