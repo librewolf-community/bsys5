@@ -20,7 +20,6 @@ Build Docker Images:
           - ubuntu21
           - ubuntu22
           - mint20
-          - fedora34
           - fedora35
           - fedora36
           - macos-x86_64
@@ -53,7 +52,6 @@ Build:
           - ubuntu21
           - ubuntu22
           - mint20
-          - fedora34
           - fedora35
           - fedora36
           - macos-x86_64
@@ -120,8 +118,6 @@ Release:
       upload_package librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb.sha256sum
       upload_package librewolf-$FILEVER.en-US.mint20.x86_64.deb
       upload_package librewolf-$FILEVER.en-US.mint20.x86_64.deb.sha256sum
-      upload_package librewolf-$FILEVER.fc34.x86_64.rpm 
-      upload_package librewolf-$FILEVER.fc34.x86_64.rpm.sha256sum
       upload_package librewolf-$FILEVER.fc35.x86_64.rpm
       upload_package librewolf-$FILEVER.fc35.x86_64.rpm.sha256sum
       upload_package librewolf-$FILEVER.fc36.x86_64.rpm
@@ -165,12 +161,7 @@ Release:
         - name: Linux Mint 20 (sha256sum)
           link_type: other
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mint20.x86_64.deb.sha256sum
-        - name: Fedora 34 (rpm)
-          link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc34.x86_64.rpm
-        - name: Fedora 34 (sha256sum)
-          link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc34.x86_64.rpm.sha256sum
+fc34.x86_64.rpm.sha256sum
         - name: Fedora 35 (rpm)
           link_type: package
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc35.x86_64.rpm
