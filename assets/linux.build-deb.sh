@@ -20,7 +20,7 @@ Priority: optional
 Provides: gnome-www-browser, www-browser, x-www-browser
 Section: web
 EOF
-echo "Version: $1-$2" >>control
+echo "Version: $1" >>control
 cd ..
 
 mkdir -p usr/share/librewolf
@@ -40,6 +40,12 @@ cp -v ../start-librewolf.desktop usr/share/applications/start-librewolf.desktop
 
 cd ..
 dpkg-deb --build librewolf
+
+# Sign the deb file if private key is provided
+if [[ -f pk.asc ]]; then
+  gpg --import pk.asc
+  dpkg-sig --sign builder librewolf.deb
+fi
 
 echo ""
 ls -lh librewolf.deb
