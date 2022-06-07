@@ -14,7 +14,7 @@ ENV TZ=Europe/Amsterdam
 
 # dependencies needed to run ./mach bootstrap
 RUN ( apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget dpkg-sig ; true)
-RUN ( dnf -y upgrade && dnf -y install mercurial python3 python3-devel wget rpm-build rpm-sign ; true)
+
 
 # setup wasi
 RUN export target_wasi_location=$HOME/.mozbuild/wrlb/ &&\
@@ -25,14 +25,42 @@ RUN export target_wasi_location=$HOME/.mozbuild/wrlb/ &&\
     cp -r wasi-sdk-$wasi_fullversion/share/wasi-sysroot $target_wasi_location &&\
     rm -f wasi-sdk-*.tar.gz* && rm -rf wasi-sdk-*
 
+
+
+# dependencies needed to run ./mach bootstrap
+RUN apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget build-essential libpython3-dev m4 unzip uuid zip libasound2-dev libcurl4-openssl-dev libdbus-1-dev libdbus-glib-1-dev libdrm-dev libgtk-3-dev libpulse-dev libx11-xcb-dev libxt-dev xvfb rsync
+
+
+
+
+
+
+
 # run the bootstrap
-RUN wget -q -O librewolf-$version-$source_release.source.tar.gz https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/librewolf-$version-$source_release.source.tar.gz?job=Build &&\
-    tar xf librewolf-$version-$source_release.source.tar.gz &&\
-    cd librewolf-$version-$source_release &&\
-    MOZBUILD_STATE_PATH=$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser &&\
-    /root/.cargo/bin/cargo install cbindgen &&\
-    cd .. &&\
-    rm -rf librewolf-$version-$source_release librewolf-$version-$source_release.source.tar.gz
+#RUN wget -q -O librewolf-$version-$source_release.source.tar.gz https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/librewolf-$version-$source_release.source.tar.gz?job=Build
+#RUN tar xf librewolf-$version-$source_release.source.tar.gz
+#WORKDIR librewolf-$version-$source_release
+#
+# mozconfig file
+#RUN echo "" > mozconfig
+#RUN echo "ac_add_options --target=x86_64-pc-mingw32" >> mozconfig
+#RUN echo "ac_add_options --enable-bootstrap" >> mozconfig
+##RUN echo "ac_add_options --disable-profiling" >> mozconfig
+#RUN echo "" >> mozconfig
+#
+#RUN pip install winregistry
+#
+#RUN MOZBUILD_STATE_PATH=$HOME/.mozbuild ./mach --no-interactive bootstrap "--application-choice=browser"
+#RUN /root/.cargo/bin/cargo install cbindgen
+## 	x86_64-pc-windows-gnu
+##	x86_64-pc-windows-msvc
+#RUN /root/.cargo/bin/rustup target add x86_64-pc-windows-gnu
+##failes target(s): x86_64-pc-mingw32
+#
+#
+#WORKDIR ..
+#RUN rm -rf librewolf-$version-$source_release librewolf-$version-$source_release.source.tar.gz
+
 
 # our work happens here, on the host filesystem.
 WORKDIR /work
@@ -48,9 +76,6 @@ VOLUME ["/work"]
 #ARG version=error
 #ARG source_release=error
 #
-# dependencies needed to run ./mach bootstrap
-#RUN apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget build-essential libpython3-dev m4 unzip uuid zip libasound2-dev libcurl4-openssl-dev libdbus-1-dev libdbus-glib-1-dev libdrm-dev libgtk-3-dev libpulse-dev libx11-xcb-dev libxt-dev xvfb rsync
-
 # setup windows tools
 #
 #RUN true

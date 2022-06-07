@@ -42,6 +42,7 @@ help :
 
 clean :
 	sudo rm -rf work
+	rm -f librewolf-*.en-US.*.tar.bz2*
 
 veryclean : clean
 	rm -f $(tarball) $(tarball).sha256sum

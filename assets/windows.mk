@@ -16,31 +16,28 @@ build : $(outfile) $(outfile).sha256sum
 
 $(outfile) :
 	${MAKE} work
+
+#
+# here we add stuff that needs to be patched and changed before doing the build
+# BUILD FOLDER = "work/librewolf-$(version)-$(source_release)"
+#
+
+	echo "" > mozconfig
+	echo "ac_add_options --target=x86_64-pc-mingw32" >> mozconfig
+	echo "ac_add_options --enable-bootstrap" >> mozconfig
+	echo "" >> mozconfig
+	cat work/librewolf-$(version)-$(source_release)/mozconfig mozconfig >> tmp
+	cp -v tmp work/librewolf-$(version)-$(source_release)/mozconfig
+	rm -f mozconfig tmp
+	cp -v assets/windows.build.sh work
+
 ifeq ($(use_docker),false)
-	(cd work/librewolf-$(version)-$(source_release) && ./mach build && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales > /dev/null)
+	(cd work/librewolf-$(version)-$(source_release) && ../windows.build.sh)
 else
-	docker run --rm -v $(shell pwd)/work:/work:rw win64:latest sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && echo Packaging... && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales >/dev/null"
+	docker run --rm -v $(shell pwd)/work:/work:rw win64:latest sh -c "cd /work/librewolf-$(version)-$(source_release) && ../windows.build.sh"
 endif
 	cp -v work/librewolf-$(version)-$(source_release)/obj-x86_64-pc-linux-gnu/dist/librewolf-$(version)-$(source_release).en-US.linux-x86_64.tar.bz2 $(outfile)
 
 $(outfile).sha256sum : $(outfile)
 	sha256sum $(outfile) > $(outfile).sha256sum
 	cat $(outfile).sha256sum
-
-
-## $(use_docker)
-#
-#.PHONY : docker build
-#
-#version:=$(shell cat version)
-#release:=$(shell cat release)
-#source_release:=$(shell cat source_release)
-#
-##use_docker=true
-#ifeq ($(use_docker),)
-#use_docker:=true
-#endif
-#
-#outfile=librewolf-$(version)-$(release).en-US.win64.zip
-#docker-image=librewolf/bsys5-image-windows
-
