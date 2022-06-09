@@ -61,9 +61,7 @@ Build:
     use_docker: "false"
   image: registry.gitlab.com/librewolf-community/browser/bsys5/$DISTRO
   tags:
-    - amd64
-    # Build on dedicated runner
-    - dedicated
+    - autoscale
   except:
     - merge_requests
   script:
