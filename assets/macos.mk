@@ -19,7 +19,7 @@ $(outfile) :
 	${MAKE} work
 	sed "s/_ARCH_/$(arch)/g" < assets/macos.mozconfig > work/librewolf-$(version)-$(source_release)/mozconfig
 ifeq ($(use_docker),false)
-	(cd work/librewolf-$(version)-$(source_release) && ./mach build && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales >/dev/null)
+	(cd work/librewolf-$(version)-$(source_release) && ./mach build && echo "Packaging... (output hidden)" && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales >/dev/null)
 else
 	docker run --rm -v $(shell pwd)/work:/work:rw registry.gitlab.com/librewolf-community/browser/bsys5/macos-$(arch) sh -c "cd /work/librewolf-$(version)-$(source_release) && ./mach build && echo Packaging... && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales >/dev/null"
 endif
