@@ -13,7 +13,7 @@ ENV TZ=Europe/Amsterdam
 
 
 # dependencies needed to run ./mach bootstrap
-RUN ( apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget dpkg-sig ; true)
+RUN ( apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip curl wget dpkg-sig)
 
 
 # setup wasi
@@ -25,10 +25,75 @@ RUN export target_wasi_location=$HOME/.mozbuild/wrlb/ &&\
     cp -r wasi-sdk-$wasi_fullversion/share/wasi-sysroot $target_wasi_location &&\
     rm -f wasi-sdk-*.tar.gz* && rm -rf wasi-sdk-*
 
+# install-packages
+RUN apt -y install msitools p7zip-full nsis upx-ucl wine wine64-tools libssl-dev zstd
+
+# prepare
+RUN wget -q -O librewolf-$version-$source_release.source.tar.gz https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/librewolf-$version-$source_release.source.tar.gz?job=Build
+RUN tar xf librewolf-$version-$source_release.source.tar.gz
+WORKDIR librewolf-$version-$source_release
+
+RUN echo "export MOZBUILD=$HOME/.mozbuild" > mozconfig
+RUN echo "ac_add_options --enable-bootstrap" >> mozconfig
+RUN echo "" >> mozconfig
+RUN echo "ac_add_options --target=x86_64-pc-mingw32" >> mozconfig
+RUN echo "CROSS_BUILD=1" >> mozconfig
+RUN echo "" >> mozconfig
+RUN echo "export WINDOWSSDKDIR=\"$MOZBUILD/win-cross/vs/windows kits/10\"" >> mozconfig
+RUN echo "mk_add_options \"export LD_PRELOAD=$MOZBUILD/win-cross/liblowercase/liblowercase.so\"" >> mozconfig
+RUN echo "mk_add_options \"export LOWERCASE_DIRS=$MOZBUILD/win-cross\"" >> mozconfig
+RUN echo "" >> mozconfig
+RUN echo "EXTRA_PATH=\"$MOZBUILD/win-cross/vs/vc/tools/msvc/14.29.30133/bin/hostx64/x64:\"" >> mozconfig
+RUN echo "mk_add_options \"export PATH=$EXTRA_PATH$PATH\"" >> mozconfig
+RUN echo "" >> mozconfig
+RUN echo "export CC=\"$MOZBUILD/clang/bin/clang-cl\"" >> mozconfig
+RUN echo "export CXX=\"$MOZBUILD/clang/bin/clang-cl\"" >> mozconfig
+RUN echo "export HOST_CC=\"$MOZBUILD/clang/bin/clang\"" >> mozconfig
+RUN echo "export HOST_CXX=\"$MOZBUILD/clang/bin/clang++\"" >> mozconfig
+RUN echo "" >> mozconfig
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+ENV PATH /root/.cargo/bin:$PATH
+RUN rustup target add x86_64-pc-windows-msvc
+
+RUN ./mach --no-interactive bootstrap --application-choice=browser
+RUN ./mach artifact toolchain --from-build linux64-binutils
+RUN ./mach artifact toolchain --from-build linux64-clang
+RUN ./mach artifact toolchain --from-build linux64-rust-cross
+RUN ./mach artifact toolchain --from-build linux64-nasm
+RUN ./mach artifact toolchain --from-build linux64-node
+RUN ./mach artifact toolchain --from-build linux64-cbindgen
+RUN ./mach artifact toolchain --from-build linux64-wine
+RUN ./mach artifact toolchain --from-build linux64-liblowercase
+
+RUN (cd build/liblowercase && cargo build && mkdir -p ~/.mozbuild/win-cross/liblowercase && cp -v target/debug/liblowercase.so ~/.mozbuild/win-cross/liblowercase)
+
+RUN ./mach python --virtualenv build build/vs/pack_vs.py build/vs/vs2019.yaml -o ${HOME}/.mozbuild/vs.tar.zst
+RUN (cd ${HOME}/.mozbuild/win-cross && tar xf ../vs.tar.zst)
+RUN rm -rf ${HOME}/.mozbuild/vs.tar.zst
+
+# cleanup big mozilla build folder.
+WORKDIR ..
+RUN rm -rf librewolf-$version-$source_release librewolf-$version-$source_release.source.tar.gz
+
+# expose the /work folder
+WORKDIR /work
+VOLUME ["/work"]
+
+
+
+
+
+
+
+
+
+
+
 
 
 # dependencies needed to run ./mach bootstrap
-RUN apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget build-essential libpython3-dev m4 unzip uuid zip libasound2-dev libcurl4-openssl-dev libdbus-1-dev libdbus-glib-1-dev libdrm-dev libgtk-3-dev libpulse-dev libx11-xcb-dev libxt-dev xvfb rsync
+#RUN apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget build-essential libpython3-dev m4 unzip uuid zip libasound2-dev libcurl4-openssl-dev libdbus-1-dev libdbus-glib-1-dev libdrm-dev libgtk-3-dev libpulse-dev libx11-xcb-dev libxt-dev xvfb rsync
 
 
 
@@ -63,8 +128,6 @@ RUN apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial pyth
 
 
 # our work happens here, on the host filesystem.
-WORKDIR /work
-VOLUME ["/work"]
 
 
 ##
