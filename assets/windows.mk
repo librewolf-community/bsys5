@@ -27,8 +27,10 @@ $(outfile) :
 	echo "ac_add_options --enable-bootstrap" >> mozconfig
 	echo "" >> mozconfig
 	cat work/librewolf-$(version)-$(source_release)/mozconfig mozconfig >> tmp
+	cp -v tmp work/mozconfig
 	cp -v tmp work/librewolf-$(version)-$(source_release)/mozconfig
 	rm -f mozconfig tmp
+
 	cp -v assets/windows.build.sh work
 
 ifeq ($(use_docker),false)
