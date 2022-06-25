@@ -6,6 +6,7 @@ source_release:=$(shell cat source_release)
 full_version:=$(version)-$(source_release)$(shell [ $(release) -gt 1 ] && echo "-$(release)")
 
 help :
+
 	@echo "Use: make [help]"
 	@echo "          [docker] [push] [rmi]    - handle docker images"
 	@echo "          [build]                  - building all artifacts"
@@ -203,3 +204,6 @@ docker-win64 :
 	${MAKE} -f assets/windows.mk docker
 win64 :
 	${MAKE} -f assets/windows.mk build
+
+typescript :
+	script -c "make clean docker-win64 win64"
