@@ -186,6 +186,7 @@ Release:
 
 Update Repositories:
   stage: deploy
+  when: manual
   except:
     - merge_requests
   image: ubuntu
