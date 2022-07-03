@@ -189,14 +189,10 @@ Update Repositories:
   when: manual
   except:
     - merge_requests
-  image: ubuntu
-  before_script:
-    - apt-get update
-    - apt-get install -y curl
+  image: curlimages/curl
   script:
     - |
       #
-      set -e
       FILEVER=$(cat version)-$(cat source_release) ; grep 1 release ; if [ ! $? ]; then FILEVER=$(cat version)-$(cat source_release)-$(cat release); fi
 
       body="{
