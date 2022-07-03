@@ -192,7 +192,7 @@ Update Repositories:
   script:
     - |
       #
-      FILEVER=$(cat version)-$(cat source_release) ; grep 1 release ; if [ ! $? ]; then FILEVER=$(cat version)-$(cat source_release)-$(cat release); fi
+      FILEVER=$(cat version)-$(cat source_release) ; grep -q 1 release ; if [ ! $? ]; then FILEVER=$(cat version)-$(cat source_release)-$(cat release); fi
 
       curl "https://shorsh.de/update_lw_repos.php?version=$FILEVER&log=true&token=$REPO_DEPLOY_TOKEN"
 
