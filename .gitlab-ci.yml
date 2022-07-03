@@ -186,17 +186,54 @@ Release:
 
 Update Repositories:
   stage: deploy
-  needs:
-    - job: "Build"
-      artifacts: true
-    - job: "Release"
   only:
     - master
   except:
     - merge_requests
-  image: ubuntu
-  before_script:
-    - apt-get update
-    - apt-get install -y curl
+  image: curlimages/curl
   script:
-    - curl "https://shorsh.de/update_lw_repos.php?version=$FILEVER&log=true&token=$REPO_DEPLOY_TOKEN"
+    - |
+      #
+      FILEVER=$(cat version)-$(cat source_release) ; grep -q 1 release ; if [ ! $? ]; then FILEVER=$(cat version)-$(cat source_release)-$(cat release); fi
+
+      curl "https://shorsh.de/update_lw_repos.php?version=$FILEVER&log=false&token=$REPO_DEPLOY_TOKEN"
+
+      echo "Submitted update request to live LibreWolf repositories"
+
+      body="{
+        \"token\": \"$REPO_DEPLOY_TOKEN\",
+        \"debs\": [
+          {
+            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.debian11.x86_64.deb\",
+            \"distros\": [\"bullseye\"]
+          },
+          {
+            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb\",
+            \"distros\": [\"focal\"]
+          },
+          {
+            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb\",
+            \"distros\": [\"impish\"]
+          },
+          {
+            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb\",
+            \"distros\": [\"jammy\"]
+          },
+          {
+            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mint20.x86_64.deb\",
+            \"distros\": [\"uma\", \"una\"]
+          }
+        ],
+        \"rpms\": [
+          {
+            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc35.x86_64.rpm\"
+          },
+          {
+            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc36.x86_64.rpm\"
+          }
+        ]
+      }"
+
+      id=$(curl "https://kho.librewolf.net/job" --request POST --data "$body")
+
+      echo "Submitted update request to testing LibreWolf repository (https://kho.librewolf.net/job?id=$id)"
