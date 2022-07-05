@@ -200,39 +200,42 @@ Update Repositories:
 
       echo "Submitted update request to live LibreWolf repositories"
 
-      body="{
-        \"token\": \"$REPO_DEPLOY_TOKEN\",
-        \"debs\": [
+      body=$(cat <<EOF
+      {
+        "token": "$REPO_DEPLOY_TOKEN",
+        "debs": [
           {
-            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.debian11.x86_64.deb\",
-            \"distros\": [\"bullseye\"]
+            "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.debian11.x86_64.deb",
+            "distros": ["bullseye"]
           },
           {
-            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb\",
-            \"distros\": [\"focal\"]
+            "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb",
+            "distros": ["focal"]
           },
           {
-            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb\",
-            \"distros\": [\"impish\"]
+            "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb",
+            "distros": ["impish"]
           },
           {
-            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb\",
-            \"distros\": [\"jammy\"]
+            "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb",
+            "distros": ["jammy"]
           },
           {
-            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mint20.x86_64.deb\",
-            \"distros\": [\"uma\", \"una\"]
+            "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mint20.x86_64.deb",
+            "distros": ["uma", "una"]
           }
         ],
-        \"rpms\": [
+        "rpms": [
           {
-            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc35.x86_64.rpm\"
+            "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc35.x86_64.rpm"
           },
           {
-            \"file\": \"$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc36.x86_64.rpm\"
+            "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc36.x86_64.rpm"
           }
         ]
-      }"
+      }
+      EOF
+      )
 
       id=$(curl "https://kho.librewolf.net/job" --request POST --data "$body")
 
