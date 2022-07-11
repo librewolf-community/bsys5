@@ -1,4 +1,4 @@
-.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-ubuntu22 ubuntu22 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-fedora36 fedora36 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64
+.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-ubuntu22 ubuntu22 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-fedora36 fedora36 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64 tarball
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -38,6 +38,7 @@ help :
 	@echo "  [macos-x64_64]"
 	@echo "  [macos-aarch64]"
 	@echo "  [win64]"
+	@echo "  [tarball]"
 	@echo ""
 
 
@@ -179,6 +180,12 @@ fedora36 :
 	${MAKE} -f assets/linux.mk distro=fedora36 build
 	${MAKE} -f assets/linux.artifacts.mk fc=fc36 distro=fedora36 artifacts-rpm
 
+## tarball
+tarball :	
+	${MAKE} -f assets/linux.mk distro=ubuntu20 build
+	mv -v librewolf-$(full_version).en-US.ubuntu20-x86_64.tar.bz2 librewolf-$(full_version).en-US.generic-x86_64.tar.bz
+	sha256sum librewolf-$(full_version).en-US.generic-x86_64.tar.bz > librewolf-$(full_version).en-US.generic-x86_64.tar.bz.sha256sum
+	cat librewolf-$(full_version).en-US.generic-x86_64.tar.bz.sha256sum
 
 #
 # MacOS
