@@ -22,6 +22,7 @@ Build Docker Images:
           - mint20
           - fedora35
           - fedora36
+          - tumbleweed
           - macos-x86_64
           - macos-aarch64
   variables:
@@ -54,6 +55,7 @@ Build:
           - mint20
           - fedora35
           - fedora36
+          - tumbleweed
           - macos-x86_64
           - macos-aarch64
   variables:
@@ -120,6 +122,8 @@ Release:
       upload_package librewolf-$FILEVER.fc35.x86_64.rpm.sha256sum
       upload_package librewolf-$FILEVER.fc36.x86_64.rpm
       upload_package librewolf-$FILEVER.fc36.x86_64.rpm.sha256sum
+      upload_package librewolf-$FILEVER.tumbleweed.x86_64.rpm
+      upload_package librewolf-$FILEVER.tumbleweed.x86_64.rpm.sha256sum
       upload_package librewolf-$FILEVER.en-US.mac.x86_64.dmg
       upload_package librewolf-$FILEVER.en-US.mac.x86_64.dmg.sha256sum
       upload_package librewolf-$FILEVER.en-US.mac.aarch64.dmg
@@ -171,6 +175,12 @@ Release:
         - name: Fedora 36 (sha256sum)
           link_type: other
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc36.x86_64.rpm.sha256sum
+        - name: openSUSE Tumbleweed (rpm)
+          link_type: package
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.tumbleweed.x86_64.rpm
+        - name: openSUSE Tumbleweed (sha256sum)
+          link_type: other
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.tumbleweed.x86_64.rpm.sha256sum
         - name: macOS x86_64 (dmg)
           link_type: package
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.mac.x86_64.dmg
@@ -231,6 +241,9 @@ Update Repositories:
           },
           {
             "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.fc36.x86_64.rpm"
+          },
+          {
+            "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.tumbleweed.x86_64.rpm"
           }
         ]
       }
