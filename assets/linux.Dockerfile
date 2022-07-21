@@ -24,7 +24,6 @@ RUN cd /tmp &&\
     tar xf librewolf-$version-$source_release.source.tar.gz &&\
     cd librewolf-$version-$source_release &&\
     MOZBUILD_STATE_PATH=$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser &&\
-    (cd /root/.mozbuild && /tmp/librewolf-$version-$source_release/mach artifact toolchain --from-build sysroot-wasm32-wasi) &&\
     /root/.cargo/bin/cargo install cbindgen &&\
     cd .. &&\
     rm -rf librewolf-$version-$source_release librewolf-$version-$source_release.source.tar.gz

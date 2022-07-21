@@ -16,15 +16,6 @@ ENV wasi_mainversion 14
 # dependencies needed to run ./mach bootstrap
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget build-essential libpython3-dev m4 unzip uuid zip libasound2-dev libcurl4-openssl-dev libdbus-1-dev libdbus-glib-1-dev libdrm-dev libgtk-3-dev libpulse-dev libx11-xcb-dev libxt-dev xvfb rsync
 
-# setup wasi
-RUN export target_wasi_location=$HOME/.mozbuild/wrlb/ &&\
-    wget -q https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$wasi_mainversion/wasi-sdk-$wasi_fullversion-linux.tar.gz &&\
-    tar xf wasi-sdk-$wasi_fullversion-linux.tar.gz &&\
-    mkdir -p $target_wasi_location &&\
-    rm -rf $target_wasi_location/wasi-sysroot &&\
-    cp -r wasi-sdk-$wasi_fullversion/share/wasi-sysroot $target_wasi_location &&\
-    rm -f wasi-sdk-*.tar.gz* && rm -rf wasi-sdk-*
-
 # setup osx sdk
 RUN mkdir -p /osx-cross/MacOSX-SDKs &&\
     cd /osx-cross/MacOSX-SDKs &&\
