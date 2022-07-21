@@ -14,8 +14,9 @@ ENV TZ=Europe/Amsterdam
 
 
 # dependencies needed to run ./mach bootstrap
-RUN ( apt-get -y update && apt-get -y upgrade && apt-get -y install mercurial python3 python3-dev python3-pip wget dpkg-sig ; true)
-RUN ( dnf -y upgrade && dnf -y install mercurial python3 python3-devel wget rpm-build rpm-sign ; true)
+RUN ( apt-get -y update && apt-get -y upgrade && apt-get -y install python3 python3-dev python3-pip wget dpkg-sig ; true)
+RUN ( dnf -y upgrade && dnf -y install python3 python3-devel wget rpm-build rpm-sign ; true)
+RUN ( zypper -n in mercurial python3 python3-pip python3-devel wget rpm-build lld ; true)
 
 # setup wasi
 RUN export target_wasi_location=$HOME/.mozbuild/wrlb/ &&\
@@ -27,7 +28,7 @@ RUN export target_wasi_location=$HOME/.mozbuild/wrlb/ &&\
     rm -f wasi-sdk-*.tar.gz* && rm -rf wasi-sdk-*
 
 # run the bootstrap
-RUN wget -q -O librewolf-$version-$source_release.source.tar.gz https://gitlab.com/librewolf-community/browser/source/-/jobs/artifacts/main/raw/librewolf-$version-$source_release.source.tar.gz?job=Build &&\
+RUN wget -q -O librewolf-$version-$source_release.source.tar.gz https://gitlab.com/librewolf-community/browser/source/-/jobs/2753010907/artifacts/raw/librewolf-102.0.1-1.source.tar.gz &&\
     tar xf librewolf-$version-$source_release.source.tar.gz &&\
     cd librewolf-$version-$source_release &&\
     MOZBUILD_STATE_PATH=$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser &&\

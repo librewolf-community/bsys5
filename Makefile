@@ -1,4 +1,4 @@
-.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-ubuntu22 ubuntu22 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-fedora36 fedora36 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64 tarball
+.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-ubuntu22 ubuntu22 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-fedora36 fedora36 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64 docker-tumbleweed tumbleweed tarball
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -23,6 +23,7 @@ help :
 	@echo "  [docker-fedora36]"
 	@echo "  [docker-macos-x86_64]"
 	@echo "  [docker-macos-aarch64]"
+	@echo "  [docker-tumbleweed]"
 	@echo ""
 	@echo "build targets:" 
 	@echo "  [debian11]"
@@ -35,6 +36,7 @@ help :
 	@echo "  [fedora36]"
 	@echo "  [macos-x64_64]"
 	@echo "  [macos-aarch64]"
+	@echo "  [tumbleweed]"
 	@echo "  [tarball]"
 	@echo ""
 
@@ -119,6 +121,7 @@ $(tarball) :
 work : $(tarball)
 	mkdir work
 	(cd work && tar xf ../$(tarball))
+	echo ac_add_options --enable-bootstrap >> work/librewolf-$(version)-$(source_release)/mozconfig
 
 
 
@@ -175,6 +178,12 @@ docker-fedora36 :
 fedora36 :
 	${MAKE} -f assets/linux.mk distro=fedora36 build
 	${MAKE} -f assets/linux.artifacts.mk fc=fc36 distro=fedora36 artifacts-rpm
+## opensuse tumbleweed
+docker-tumbleweed :
+	${MAKE} -f assets/linux.mk distro=tumbleweed "distro_image=opensuse/tumbleweed" docker
+tumbleweed :
+	${MAKE} -f assets/linux.mk distro=tumbleweed build
+	${MAKE} -f assets/linux.artifacts.mk fc=tumbleweed distro=tumbleweed artifacts-rpm
 
 ## tarball
 tarball :	

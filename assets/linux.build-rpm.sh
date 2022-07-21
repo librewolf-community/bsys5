@@ -39,6 +39,7 @@ echo '---'
 
 rm -rf rpmbuild
 mkdir -p rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+rm -rf /usr/src && ln -sv /WORK /usr/src # Required for openSUSE
 sed "s/__VERSION__/$version/g" </work/librewolf.spec >/work/tmp.spec
 sed "s/__RELEASE__/$full_release/g" </work/tmp.spec >rpmbuild/SPECS/librewolf.spec
 
