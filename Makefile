@@ -124,7 +124,6 @@ $(tarball) :
 work : $(tarball)
 	mkdir work
 	(cd work && tar xf ../$(tarball))
-	echo ac_add_options --enable-bootstrap >> work/librewolf-$(version)-$(source_release)/mozconfig
 
 
 
