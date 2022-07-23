@@ -7,8 +7,6 @@ stages:
 Build Docker Images:
   stage: images
   when: manual
-  only:
-    - master
   image: registry.gitlab.com/librewolf-community/browser/bsys5/dind
   # Needed because we aren't using our custom runners here
   services:
