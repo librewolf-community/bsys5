@@ -9,15 +9,17 @@ Build Docker Images:
   when: manual
   only:
     - master
-  image: ubuntu
+  image: registry.gitlab.com/librewolf-community/browser/bsys5/dind
+  # Needed because we aren't using our custom runners here
   services:
     - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
   parallel:
     matrix:
       - DISTRO:
           - debian11
           - ubuntu20
-          - ubuntu21
           - ubuntu22
           - mint20
           - fedora35
@@ -25,17 +27,7 @@ Build Docker Images:
           - tumbleweed
           - macos-x86_64
           - macos-aarch64
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-  # Install docker and make
-  before_script:
-    - apt-get update
-    - apt-get install -y ca-certificates curl gnupg lsb-release
-    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-    - apt-get update
-    - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin make
-  # Build container
+          - dind
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
     - make docker-$DISTRO
@@ -50,7 +42,6 @@ Build:
       - DISTRO:
           - debian11
           - ubuntu20
-          - ubuntu21
           - ubuntu22
           - mint20
           - fedora35
@@ -60,8 +51,7 @@ Build:
           - macos-aarch64
   variables:
     SOURCE_URL: $SOURCE_URL
-    use_docker: "false"
-  image: registry.gitlab.com/librewolf-community/browser/bsys5/$DISTRO
+  image: registry.gitlab.com/librewolf-community/browser/bsys5/dind
   tags:
     - autoscale
   except:
@@ -112,8 +102,6 @@ Release:
       upload_package librewolf-$FILEVER.en-US.debian11.x86_64.deb.sha256sum
       upload_package librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb
       upload_package librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb.sha256sum
-      upload_package librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb
-      upload_package librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb.sha256sum
       upload_package librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb
       upload_package librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb.sha256sum
       upload_package librewolf-$FILEVER.en-US.mint20.x86_64.deb
@@ -145,12 +133,6 @@ Release:
         - name: Ubuntu 20 (sha256sum)
           link_type: other
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb.sha256sum
-        - name: Ubuntu 21 (deb)
-          link_type: package
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb
-        - name: Ubuntu 21 (sha256sum)
-          link_type: other
-          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb.sha256sum
         - name: Ubuntu 22 (deb)
           link_type: package
           url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb
@@ -221,10 +203,6 @@ Update Repositories:
           {
             "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu20.x86_64.deb",
             "distros": ["focal"]
-          },
-          {
-            "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu21.x86_64.deb",
-            "distros": ["impish"]
           },
           {
             "file": "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/librewolf/$FILEVER/librewolf-$FILEVER.en-US.ubuntu22.x86_64.deb",

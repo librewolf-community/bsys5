@@ -1,4 +1,4 @@
-.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-ubuntu22 ubuntu22 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-fedora36 fedora36 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64 docker-tumbleweed tumbleweed tarball
+.PHONY : help clean veryclean prune docker push rmi build update work docker-debian11 debian11 docker-mint20 mint20 docker-ubuntu20 ubuntu20 docker-ubuntu21 ubuntu21 docker-ubuntu22 ubuntu22 docker-fedora34 fedora34 docker-fedora35 fedora35 docker-fedora36 fedora36 docker-macos-x86_64 macos-x86_64 docker-macos-aarch64 macos-aarch64 docker-tumbleweed tumbleweed tarball docker-dind
 
 version:=$(shell cat version)
 release:=$(shell cat release)
@@ -24,6 +24,7 @@ help :
 	@echo "  [docker-macos-x86_64]"
 	@echo "  [docker-macos-aarch64]"
 	@echo "  [docker-tumbleweed]"
+	@echo "  [docker-dind]"
 	@echo ""
 	@echo "build targets:" 
 	@echo "  [debian11]"
@@ -53,7 +54,7 @@ veryclean : clean
 prune :
 	docker system prune --all --force
 
-docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-ubuntu22 docker-fedora34 docker-fedora35 docker-fedora36 docker-macos-x86_64 docker-macos-aarch64
+docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-ubuntu22 docker-fedora34 docker-fedora35 docker-fedora36 docker-tumbleweed docker-macos-x86_64 docker-macos-aarch64 docker-dind
 
 build :
 	${MAKE} clean
@@ -73,6 +74,8 @@ build :
 	${MAKE} clean
 	${MAKE} fedora36
 	${MAKE} clean
+	${MAKE} tumbleweed
+	${MAKE} clean
 	${MAKE} macos-x86_64
 	${MAKE} clean
 	${MAKE} macos-aarch64
@@ -87,8 +90,10 @@ push :
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/fedora34
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/fedora35
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/fedora36
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/tumbleweed
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/macos-x86_64
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/macos-aarch64
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/dind
 
 rmi :
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/debian11
@@ -99,8 +104,10 @@ rmi :
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/fedora34
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/fedora35
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/fedora36
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/tumbleweed
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/macos-x86_64
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/macos-aarch64
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/dind
 
 update :
 	@wget -q -O version "https://gitlab.com/librewolf-community/browser/source/-/raw/main/version"
@@ -121,7 +128,6 @@ $(tarball) :
 work : $(tarball)
 	mkdir work
 	(cd work && tar xf ../$(tarball))
-	echo ac_add_options --enable-bootstrap >> work/librewolf-$(version)-$(source_release)/mozconfig
 
 
 
@@ -207,3 +213,11 @@ docker-macos-aarch64 :
 	${MAKE} -f assets/macos.mk arch=aarch64 docker
 macos-aarch64 :
 	${MAKE} -f assets/macos.mk arch=aarch64 build
+
+
+#
+# Docker in Docker (for GitLab CI)
+#
+
+docker-dind :
+	docker build -f assets/dind.Dockerfile -t registry.gitlab.com/librewolf-community/browser/bsys5/dind:latest .
