@@ -54,7 +54,7 @@ veryclean : clean
 prune :
 	docker system prune --all --force
 
-docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-ubuntu22 docker-fedora34 docker-fedora35 docker-fedora36 docker-macos-x86_64 docker-macos-aarch64 docker-dind
+docker : docker-debian11 docker-mint20 docker-ubuntu20 docker-ubuntu21 docker-ubuntu22 docker-fedora34 docker-fedora35 docker-fedora36 docker-tumbleweed docker-macos-x86_64 docker-macos-aarch64 docker-dind
 
 build :
 	${MAKE} clean
@@ -74,6 +74,8 @@ build :
 	${MAKE} clean
 	${MAKE} fedora36
 	${MAKE} clean
+	${MAKE} tumbleweed
+	${MAKE} clean
 	${MAKE} macos-x86_64
 	${MAKE} clean
 	${MAKE} macos-aarch64
@@ -88,6 +90,7 @@ push :
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/fedora34
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/fedora35
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/fedora36
+	docker push registry.gitlab.com/librewolf-community/browser/bsys5/tumbleweed
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/macos-x86_64
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/macos-aarch64
 	docker push registry.gitlab.com/librewolf-community/browser/bsys5/dind
@@ -101,6 +104,7 @@ rmi :
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/fedora34
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/fedora35
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/fedora36
+	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/tumbleweed
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/macos-x86_64
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/macos-aarch64
 	docker rmi registry.gitlab.com/librewolf-community/browser/bsys5/dind
