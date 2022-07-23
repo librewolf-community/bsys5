@@ -9,15 +9,16 @@ scripts.
 
 ## <a id="targets"></a> Supported Targets
 
-| Platform        | x86_64                            | aarch64            |
-| --------------- | --------------------------------- | ------------------ |
-| Linux           |                                   |                    |
-| └─ Debian (deb) | ✅ (debian11)                     | -                  |
-| └─ Ubuntu (deb) | ✅ (ubuntu20, ubuntu21, ubuntu22) | -                  |
-| └─ Mint (deb)   | ✅ (mint20)                       | -                  |
-| └─ Fedora (rpm) | ✅ (fedora35, fedora36)           | -                  |
-| MacOS (dmg)     | ✅ (macos-x64_64)                 | ✅ (macos-aarch64) |
-| Windows         | _WIP_                             | -                  |
+| Platform          | x86_64                  | aarch64            |
+| ----------------- | ----------------------- | ------------------ |
+| Linux             |                         |                    |
+| └─ Debian (deb)   | ✅ (debian11)           | -                  |
+| └─ Ubuntu (deb)   | ✅ (ubuntu20, ubuntu22) | -                  |
+| └─ Mint (deb)     | ✅ (mint20)             | -                  |
+| └─ Fedora (rpm)   | ✅ (fedora35, fedora36) | -                  |
+| └─ openSUSE (rpm) | ✅ (tumbleweed)         | -                  |
+| MacOS (dmg)       | ✅ (macos-x64_64)       | ✅ (macos-aarch64) |
+| Windows           | _WIP_                   | -                  |
 
 ## Running bsys5 Locally
 
