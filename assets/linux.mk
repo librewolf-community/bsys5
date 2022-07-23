@@ -18,7 +18,7 @@ build : $(outfile) $(outfile).sha256sum
 
 $(outfile) :
 	${MAKE} work
-	[ "$(distro)" != "tumbleweed" ] && ln -sfv ./lw/mozconfig.new.without-bootstrap work/librewolf-$(version)-$(source_release)/mozconfig
+	if [ "$(distro)" != "tumbleweed" ]; then ln -sfv ./lw/mozconfig.new.without-bootstrap work/librewolf-$(version)-$(source_release)/mozconfig; fi
 ifeq ($(use_docker),false)
 	(cd work/librewolf-$(version)-$(source_release) && ./mach build && echo 'Packaging... (output hidden)' && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales >/dev/null)
 else
