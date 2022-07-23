@@ -16,7 +16,7 @@ ENV TZ=Europe/Amsterdam
 # dependencies needed to run ./mach bootstrap
 RUN ( apt-get -y update && apt-get -y upgrade && apt-get -y install python3 python3-dev python3-pip wget dpkg-sig ; true)
 RUN ( dnf -y upgrade && dnf -y install python3 python3-devel wget rpm-build rpm-sign ; true)
-RUN ( zypper -n in mercurial python3 python3-pip python3-devel wget rpm-build lld ; true)
+RUN ( zypper -n in mercurial python3 python3-pip python3-devel wget rpm-build ; true)
 
 # run the bootstrap
 RUN cd /tmp &&\
