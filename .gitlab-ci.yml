@@ -10,8 +10,6 @@ Build Docker Images:
   only:
     - master
   image: registry.gitlab.com/librewolf-community/browser/bsys5/dind
-  services:
-    - docker:dind
   parallel:
     matrix:
       - DISTRO:
@@ -51,8 +49,6 @@ Build:
   variables:
     SOURCE_URL: $SOURCE_URL
   image: registry.gitlab.com/librewolf-community/browser/bsys5/dind
-  services:
-    - docker:dind
   tags:
     - autoscale
   except:
