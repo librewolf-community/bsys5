@@ -35,7 +35,7 @@ RUN ./mach artifact toolchain --from-build linux64-libdmg
 RUN ./mach artifact toolchain --from-build linux64-cctools-port
 RUN ./mach artifact toolchain --from-build linux64-hfsplus
 RUN ./mach artifact toolchain --from-build linux64-binutils
-RUN ./mach artifact toolchain --from-build sysroot-wasm32-wasi
+RUN dir="$PWD" && cd /root/.mozbuild && "$dir/mach" artifact toolchain --from-build sysroot-wasm32-wasi
 ## RUN ./mach artifact toolchain --from-build linux64-clang-macosx-cross
 RUN /root/.cargo/bin/cargo install cbindgen
 RUN /root/.cargo/bin/rustup target add $arch-apple-darwin
