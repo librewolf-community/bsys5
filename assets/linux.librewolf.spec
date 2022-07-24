@@ -6,6 +6,7 @@ Summary:        The LibreWolf browser
 License:        MPL
 URL:            https://librewolf-community.gitlab.io/
 Source0:        lw.tar.gz
+Distribution:   %(source /etc/os-release && echo $PRETTY_NAME)
 #BuildRequires:  
 #Requires:       
 %description
